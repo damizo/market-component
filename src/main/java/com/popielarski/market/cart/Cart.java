@@ -1,10 +1,13 @@
 package com.popielarski.market.cart;
 
 import com.google.common.collect.Sets;
+import com.popielarski.market.common.Calculator;
 import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.discount.DiscountType;
 import com.popielarski.market.item.domain.Item;
+import com.popielarski.market.product.Price;
 import lombok.*;
+import org.hibernate.annotations.JoinColumnOrFormula;
 
 import javax.persistence.*;
 import java.util.Optional;
@@ -21,9 +24,6 @@ public class Cart extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
     private Set<Item> items = Sets.newHashSet();
 
-    @Column(name = "FINAL_PRICE")
-    private Long finalPrice;
-
     @Column(name = "IS_DISCOUNT_APPLIED")
     private Boolean discountApplied;
 
@@ -31,7 +31,13 @@ public class Cart extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DiscountType discount;
 
-    private Long price;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PRICE_ID")
+    private Price price;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "FINAL_PRICE_ID")
+    private Price finalPrice;
 
     public Cart() {
         discountApplied = Boolean.FALSE;
@@ -41,10 +47,10 @@ public class Cart extends BaseEntity {
         return item.getQuantity() > 1;
     }
 
-    public Long getTotalPriceOfItems() {
+    public Price getTotalPriceOfItems() {
         return this.items.stream()
                 .map(Item::getTotalPrice)
-                .reduce((firstTotalPrice, secondTotalPrice) -> firstTotalPrice + secondTotalPrice)
+                .reduce(Calculator::add)
                 .get();
     }
 
@@ -61,10 +67,11 @@ public class Cart extends BaseEntity {
     }
 
     public void addItem(Item item) {
+        this.price = item.getTotalPrice();
         this.items.add(item);
     }
 
-    public Long getPrice() {
+    public Price getPrice() {
         return this.getFinalPrice() != null ?
                 this.getFinalPrice() : this.getTotalPriceOfItems();
     }

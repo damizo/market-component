@@ -1,7 +1,9 @@
 package com.popielarski.market.cart;
 
 import com.google.common.collect.Sets;
+import com.popielarski.market.common.Calculator;
 import com.popielarski.market.common.domain.BaseDTO;
+import com.popielarski.market.common.domain.Value;
 import com.popielarski.market.discount.DiscountType;
 import com.popielarski.market.item.domain.ItemDTO;
 import lombok.Builder;
@@ -15,7 +17,7 @@ public class CartDTO extends BaseDTO {
 
     private Set<ItemDTO> items = Sets.newHashSet();
     private DiscountType discount;
-    private Long finalPrice;
+    private Value finalPrice;
 
     @Builder
     public CartDTO(Long id, Set<ItemDTO> items, DiscountType discount) {
@@ -28,10 +30,10 @@ public class CartDTO extends BaseDTO {
 
     }
 
-    public Long getTotalPrice() {
+    public Value getTotalPrice() {
         return items.stream()
                 .map(ItemDTO::getTotalPrice)
-                .reduce((firstTotalPrice, secondTotalPrice) -> firstTotalPrice + secondTotalPrice)
+                .reduce((firstTotalPrice, secondTotalPrice) -> Calculator.add(firstTotalPrice.getValue(), secondTotalPrice.getValue()))
                 .get();
     }
 
@@ -51,7 +53,7 @@ public class CartDTO extends BaseDTO {
         }
     }
 
-    public Long getPrice() {
+    public Value getPrice() {
         return this.getFinalPrice() != null ?
                 this.getFinalPrice() : this.getTotalPrice();
     }

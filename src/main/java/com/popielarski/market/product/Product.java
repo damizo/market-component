@@ -4,7 +4,10 @@ import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.discount.boughttogether.BoughtTogetherDiscount;
 import com.popielarski.market.item.domain.Item;
 import com.popielarski.market.item.domain.MultiItemsDiscount;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,11 +27,12 @@ public class Product extends BaseEntity {
     @Column(name = "PRODUCT_NAME")
     private String name;
 
-    @Column(name = "PRICE")
-    private Long price;
-
     @Column(name = "QUANTITY")
     private Integer quantity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PRICE_ID")
+    private Price price;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();

@@ -30,8 +30,8 @@ public class DiscountFacade {
         cartRepository.save(cartAfterDiscount);
         log.debug("After discount: {}", cartBeforeDiscount);
 
-        return discountMapper.toDiscountDTO(cartBeforeDiscount.getTotalPriceOfItems(),
-                cartAfterDiscount.getFinalPrice(),
+        return discountMapper.toDiscountDTO(cartBeforeDiscount.getTotalPriceOfItems().toValue(),
+                cartAfterDiscount.getFinalPrice().toValue(),
                 DiscountType.MULTI_ITEMS);
     }
 
@@ -47,8 +47,8 @@ public class DiscountFacade {
         cartRepository.save(cartAfterDiscount);
         log.debug("After discount: {}", cartBeforeDiscount);
 
-        return discountMapper.toDiscountDTO(cartBeforeDiscount.getTotalPriceOfItems(),
-                cartAfterDiscount.getFinalPrice(),
+        return discountMapper.toDiscountDTO(cartBeforeDiscount.getTotalPriceOfItems().toValue(),
+                cartAfterDiscount.getFinalPrice().toValue(),
                 DiscountType.BOUGHT_TOGETHER);
     }
 }

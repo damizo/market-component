@@ -46,12 +46,12 @@ public class CheckoutFacade {
                 .orElseThrow(() -> new UnsupportedOperationException(String.format("Checkout number %s is not available, " +
                         "probably scanning in this checkout has not been initialized", checkoutNumber)));
 
-        if (PriceUtils.isCovered(cart.getPrice(), amount)) {
+        if (PriceUtils.isCovered(cart.getPrice().toValue(), amount)) {
             checkoutCacheRepository.deleteById(Long.valueOf(checkoutNumber));
             cartRepository.save(cart);
 
             CartDTO cartDTO = cartMapper.toDTO(cart);
-            return checkoutMapper.toReceiptDTO(cart.getPrice(), checkoutNumber, amount, cartDTO);
+            return checkoutMapper.toReceiptDTO(cart.getPrice().toValue(), checkoutNumber, amount, cartDTO);
         }
 
         throw new LogicValidationException(String.format("Amount doesn't cover total price, required amount: %d", cart.getFinalPrice()));

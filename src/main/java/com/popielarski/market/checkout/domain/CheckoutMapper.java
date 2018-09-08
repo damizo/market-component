@@ -1,6 +1,8 @@
 package com.popielarski.market.checkout.domain;
 
 import com.popielarski.market.cart.CartDTO;
+import com.popielarski.market.common.Calculator;
+import com.popielarski.market.common.domain.Value;
 
 
 public class CheckoutMapper {
@@ -13,12 +15,12 @@ public class CheckoutMapper {
                 .build();
     }
 
-    public CheckoutReceiptDTO toReceiptDTO(Long price, Integer checkoutNumber, Integer amount, CartDTO cartDTO) {
+    public CheckoutReceiptDTO toReceiptDTO(Value price, Integer checkoutNumber, Integer amount, CartDTO cartDTO) {
         return CheckoutReceiptDTO.builder()
                 .status(CheckoutProcessStatus.PAID)
                 .finalPrice(price)
                 .items(cartDTO.getItems())
-                .change(amount - price)
+                .change(Calculator.subtract(amount, price))
                 .appliedDiscount(cartDTO.getDiscount())
                 .build();
     }

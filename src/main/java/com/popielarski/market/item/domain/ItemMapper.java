@@ -12,7 +12,7 @@ public class ItemMapper {
     public ItemDTO asDTO(Item item, Integer quantity) {
         return ItemDTO.builder()
                 .quantity(quantity)
-                .price(item.getProduct().getPrice())
+                .price(item.getProduct().getPrice().toValue())
                 .name(item.getProduct().getName())
                 .barCode(item.getProduct().getBarCode())
                 .build();

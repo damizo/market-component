@@ -2,7 +2,9 @@ package com.popielarski.market.item.domain;
 
 
 import com.popielarski.market.cart.Cart;
+import com.popielarski.market.common.Calculator;
 import com.popielarski.market.common.domain.BaseEntity;
+import com.popielarski.market.product.Price;
 import com.popielarski.market.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,8 +53,8 @@ public class Item extends BaseEntity {
         return this;
     }
 
-    public Long getTotalPrice() {
-        return quantity * this.product.getPrice();
+    public Price getTotalPrice() {
+        return Calculator.multiple(quantity, product.getPrice());
     }
 
 

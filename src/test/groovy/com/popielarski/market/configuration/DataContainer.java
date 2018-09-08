@@ -1,9 +1,11 @@
 package com.popielarski.market.configuration;
 
+import com.popielarski.market.common.domain.Value;
 import com.popielarski.market.discount.boughttogether.BoughtTogetherDiscount;
 import com.popielarski.market.discount.boughttogether.ProductDiscountPair;
 import com.popielarski.market.item.domain.ItemDTO;
 import com.popielarski.market.item.domain.MultiItemsDiscount;
+import com.popielarski.market.product.Price;
 import com.popielarski.market.product.Product;
 
 import java.util.Set;
@@ -14,7 +16,7 @@ public class DataContainer {
                 .barCode("P_00001")
                 .quantity(50)
                 .name("Cola 2l")
-                .price(50L)
+                .price(Price.of("5.00"))
                 .build();
     }
 
@@ -36,7 +38,7 @@ public class DataContainer {
         Product cola = cola();
         return ItemDTO.builder()
                 .name(cola.getName())
-                .price(cola.getPrice())
+                .price(Value.of(cola.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -46,7 +48,7 @@ public class DataContainer {
                 .barCode("P_00002")
                 .quantity(50)
                 .name("Snickers")
-                .price(40L)
+                .price(Price.of("2.00"))
                 .build();
     }
 
@@ -54,7 +56,7 @@ public class DataContainer {
         Product snickers = snickers();
         return ItemDTO.builder()
                 .name(snickers.getName())
-                .price(snickers.getPrice())
+                .price(Value.of(snickers.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -64,7 +66,7 @@ public class DataContainer {
                 .barCode("P_00003")
                 .quantity(50)
                 .name("Rafaello")
-                .price(70L)
+                .price(Price.of("10.00"))
                 .build();
     }
 
@@ -73,7 +75,7 @@ public class DataContainer {
         return ItemDTO.builder()
                 .barCode(rafaello.getBarCode())
                 .name(rafaello.getName())
-                .price(rafaello.getPrice())
+                .price(Value.of(rafaello.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -83,7 +85,7 @@ public class DataContainer {
                 .barCode("P_00004")
                 .quantity(20)
                 .name("Oat flakes")
-                .price(90L)
+                .price(Price.of("3.00"))
                 .build();
     }
 
@@ -92,7 +94,7 @@ public class DataContainer {
         return ItemDTO.builder()
                 .barCode(flakes.getBarCode())
                 .name(flakes.getName())
-                .price(flakes.getPrice())
+                .price(Value.of(flakes.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -102,7 +104,7 @@ public class DataContainer {
                 .barCode("P_00005")
                 .quantity(30)
                 .name("Wine")
-                .price(350L)
+                .price(Price.of("20.00"))
                 .build();
     }
 
@@ -111,7 +113,7 @@ public class DataContainer {
         return ItemDTO.builder()
                 .barCode(wine.getBarCode())
                 .name(wine.getName())
-                .price(wine.getPrice())
+                .price(Value.of(wine.getPrice()))
                 .quantity(quantity)
                 .build();
     }

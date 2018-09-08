@@ -1,8 +1,8 @@
 package com.popielarski.market.item.domain;
 
+import com.popielarski.market.common.Calculator;
+import com.popielarski.market.common.domain.Value;
 import lombok.*;
-
-import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 public class ItemDTO {
 
     private String name;
-    private Long price;
+    private Value price;
     private Integer quantity;
     private String barCode;
 
-    public Long getTotalPrice(){
-        return quantity * price;
+    public Value getTotalPrice(){
+        return Calculator.multiple(quantity, price.getValue());
     }
 
     public ItemDTO increaseQuantity(Integer quantity){

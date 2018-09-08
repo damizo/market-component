@@ -2,15 +2,14 @@ package com.popielarski.market.acceptance
 
 import com.google.common.collect.Sets
 import com.popielarski.market.IntegrationSpec
-import com.popielarski.market.configuration.DataContainer
 import com.popielarski.market.ItemConfiguration
 import com.popielarski.market.TestUtils
-import com.popielarski.market.checkout.domain.CheckoutProcessStatus
-import com.popielarski.market.checkout.domain.CheckoutReceiptDTO
-import com.popielarski.market.checkout.domain.CheckoutScanDTO
-import com.popielarski.market.checkout.domain.CheckoutStatus
-import com.popielarski.market.checkout.domain.CheckoutStatusDTO
+import com.popielarski.market.checkout.domain.*
+import com.popielarski.market.common.Calculator
+import com.popielarski.market.common.domain.Quantity
+import com.popielarski.market.common.domain.Value
 import com.popielarski.market.configuration.DataConfiguration
+import com.popielarski.market.configuration.DataContainer
 import com.popielarski.market.configuration.DiscountConfiguration
 import com.popielarski.market.discount.DiscountDTO
 import com.popielarski.market.discount.DiscountType
@@ -38,140 +37,145 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
 
     def 'should buy 2 items without any discount'() {
         when: 'client comes up to checkout number 4'
+        Integer checkoutNumber = 4;
         ResultActions comeUpToCheckoutResult = this.mockMvc
-                .perform(get("/api/v1/checkouts/{checkoutNumber}", 4))
+                .perform(get("/api/v1/checkouts/{checkoutNumber}", checkoutNumber))
 
         MvcResult mvcResult = comeUpToCheckoutResult.andReturn();
         CheckoutStatusDTO resultDTO = buildObject(mvcResult.getResponse().getContentAsString(), CheckoutStatusDTO.class)
-        CheckoutStatusDTO checkoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), 4, CheckoutStatus.SCANNING);
+        CheckoutStatusDTO expectedCheckoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(),
+                checkoutNumber,
+                CheckoutStatus.SCANNING);
 
         then: 'checkout becomes occupied by him'
         comeUpToCheckoutResult
                 .andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutStatusDTO)));
+                .andExpect(content().json(buildJson(expectedCheckoutStatusDTO)));
 
         when: 'cashier scans wine'
         ResultActions resultAfterScanningWine = this.mockMvc
                 .perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                4, dataContainer.wine().barCode));
+                checkoutNumber, dataContainer.wine().barCode));
 
-        CheckoutScanDTO checkoutScanDetails = CheckoutScanDTO.builder()
-                .checkoutNumber(4)
-                .items(Sets.newHashSet(dataContainer.wineDTO(1)))
-                .totalPrice(350L)
+        CheckoutScanDTO expectedCheckoutScanDTO = CheckoutScanDTO.builder()
+                .checkoutNumber(checkoutNumber)
+                .items(Sets.newHashSet(dataContainer.wineDTO(Quantity.ONE)))
+                .totalPrice(Value.of(20))
                 .build()
 
         then: 'price to pay increases to 350'
         resultAfterScanningWine
                 .andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutScanDetails)))
+                .andExpect(content().json(buildJson(expectedCheckoutScanDTO)))
 
         when: 'cashier scans flakes'
         ResultActions resultAfterScanningFlakes = this.mockMvc
                 .perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                4, dataContainer.flakes().barCode));
+                checkoutNumber, dataContainer.flakes().barCode));
 
-        checkoutScanDetails.totalPrice += 90L
-        checkoutScanDetails.items = Sets.newHashSet(
-                dataContainer.wineDTO(1),
-                dataContainer.flakesDTO(1))
+        expectedCheckoutScanDTO.totalPrice = Calculator.add(expectedCheckoutScanDTO.totalPrice, Value.of(3))
+        expectedCheckoutScanDTO.items = Sets.newHashSet(
+                dataContainer.wineDTO(Quantity.ONE),
+                dataContainer.flakesDTO(Quantity.ONE))
 
         then: 'price to pay increases to 440'
         resultAfterScanningFlakes
                 .andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutScanDetails)));
+                .andExpect(content().json(buildJson(expectedCheckoutScanDTO)));
 
         when: 'client pays for purchases of products that does not contain discounts'
-        Integer amountPayment = 440;
+        Integer amountPayment = 23;
 
         ResultActions receipt = this.mockMvc
                 .perform(put("/api/v1/checkouts/{checkoutNumber}?amountPayment={amountPayment}",
-                4,
+                checkoutNumber,
                 amountPayment))
 
-        CheckoutReceiptDTO checkoutSummaryDTO = CheckoutReceiptDTO.builder()
+        CheckoutReceiptDTO expectedCheckoutSummaryDTO = CheckoutReceiptDTO.builder()
                 .status(CheckoutProcessStatus.PAID)
-                .items(Sets.newHashSet(dataContainer.flakesDTO(1), dataContainer.wineDTO(1)))
-                .finalPrice(440L)
-                .change(0L)
+                .items(Sets.newHashSet(dataContainer.flakesDTO(Quantity.ONE), dataContainer.wineDTO(Quantity.ONE)))
+                .finalPrice(Value.of(amountPayment))
+                .change(Value.of(0))
                 .build()
 
         then: 'client gets receipt without any discount'
         receipt.andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutSummaryDTO)))
+                .andExpect(content().json(buildJson(expectedCheckoutSummaryDTO)))
     }
 
-    def 'should buy 2 items with "Bought Together" discount'() {
+    def 'should buy 3 items with "Bought Together" discount'() {
         when: 'client comes up to checkout number 2'
+        Integer checkoutNumber = 2;
+
         ResultActions comeUpToCheckoutResult = this.mockMvc
-                .perform(get("/api/v1/checkouts/{checkoutNumber}", 2))
+                .perform(get("/api/v1/checkouts/{checkoutNumber}", checkoutNumber))
 
         MvcResult mvcResult = comeUpToCheckoutResult.andReturn();
         CheckoutStatusDTO resultDTO = buildObject(mvcResult.getResponse().getContentAsString(), CheckoutStatusDTO.class)
-        CheckoutStatusDTO checkoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), 2, CheckoutStatus.SCANNING);
+        CheckoutStatusDTO expectedCheckoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), checkoutNumber, CheckoutStatus.SCANNING);
 
         then: 'checkout becomes occupied by him'
         comeUpToCheckoutResult
                 .andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutStatusDTO)));
+                .andExpect(content().json(buildJson(expectedCheckoutStatusDTO)));
 
         when: 'cashier scans wine twice'
         this.mockMvc.perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                2, dataContainer.wine().barCode));
+                checkoutNumber, dataContainer.wine().barCode));
 
         ResultActions resultAfterScanningWines = this.mockMvc.perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                2, dataContainer.wine().barCode));
+                checkoutNumber, dataContainer.wine().barCode));
 
-        CheckoutScanDTO checkoutScanDetails = CheckoutScanDTO.builder()
-                .checkoutNumber(2)
-                .items(Sets.newHashSet(dataContainer.wineDTO(2)))
-                .totalPrice(700L)
+        CheckoutScanDTO expectedCheckoutScanDetails = CheckoutScanDTO.builder()
+                .checkoutNumber(checkoutNumber)
+                .items(Sets.newHashSet(dataContainer.wineDTO(Quantity.TWO)))
+                .totalPrice(Value.of(40))
                 .build()
 
-        then: 'price to pay increases to 700'
+        then: 'price to pay increases to 40'
         resultAfterScanningWines
                 .andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutScanDetails)))
+                .andExpect(content().json(buildJson(expectedCheckoutScanDetails)))
 
         when: 'cashier scans rafaello'
         ResultActions resultAfterScanningRafaello = this.mockMvc.perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                2, dataContainer.rafaello().barCode));
+                checkoutNumber, dataContainer.rafaello().barCode));
 
-        checkoutScanDetails.items.add(dataContainer.rafaelloDTO(1))
-        checkoutScanDetails.totalPrice = checkoutScanDetails.totalPrice + 70
+        expectedCheckoutScanDetails.items.add(dataContainer.rafaelloDTO(Quantity.ONE))
+        expectedCheckoutScanDetails.totalPrice = Calculator.add(expectedCheckoutScanDetails.totalPrice, Value.of(10))
 
-        then: 'price to pay increases to 770'
+        then: 'price to pay increases to 50'
         resultAfterScanningRafaello
                 .andExpect(status().isOk())
-                .andExpect(content().json(buildJson(checkoutScanDetails)))
+                .andExpect(content().json(buildJson(expectedCheckoutScanDetails)))
 
-        when: 'client assign discount for his cart'
+        when: 'client assign "Bought Together" discount'
         ResultActions resultAfterDiscount = this.mockMvc
                 .perform(put("/api/v1/discounts/boughtTogether/carts/{cartId}", resultDTO.getCartId()))
 
         DiscountDTO discountDTO = DiscountDTO.builder()
-                .priceBeforeDiscount(770)
-                .priceAfterDiscount(385)
+                .priceBeforeDiscount(Value.of(50))
+                .priceAfterDiscount(Value.of(41))
                 .type(DiscountType.BOUGHT_TOGETHER)
                 .build();
 
-        then: 'price to pay decreased  385'
+        then: 'final price is decreased by 30 percent of pair of products price'
         resultAfterDiscount.andExpect(status().isOk())
                 .andExpect(content().json(buildJson(discountDTO)))
 
         when: 'client pays for cart'
-        Integer amountPayment = 385
+        Integer amountPayment = 60
         ResultActions resultActions = this.mockMvc.perform(put("/api/v1/checkouts/{checkoutNumber}?amountPayment={amountPayment}",
-                2,
+                checkoutNumber,
                 amountPayment));
 
         CheckoutReceiptDTO checkoutReceiptDTO = CheckoutReceiptDTO.builder()
-                .finalPrice(385)
-                .items(Sets.newHashSet(dataContainer.wineDTO(2), dataContainer.rafaelloDTO(1)))
+                .finalPrice(Value.of(41))
+                .items(Sets.newHashSet(dataContainer.wineDTO(Quantity.TWO), dataContainer.rafaelloDTO(Quantity.ONE)))
                 .appliedDiscount(DiscountType.BOUGHT_TOGETHER)
                 .status(CheckoutProcessStatus.PAID)
-                .change(0L)
-        .build();
+                .change(Value.of(19))
+                .build();
 
         then: 'client gets receipt'
         resultActions.andExpect(status().isOk())
@@ -180,13 +184,15 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
 
 
     def 'should buy 2 items with "Multi-Items" discount'() {
-        when: 'client comes up to checkout number 2'
+        when: 'client comes up to checkout number 1'
+        Integer checkoutNumber = 1;
+
         ResultActions comeUpToCheckoutResult = this.mockMvc
-                .perform(get("/api/v1/checkouts/{checkoutNumber}", 1))
+                .perform(get("/api/v1/checkouts/{checkoutNumber}", checkoutNumber))
 
         MvcResult mvcResult = comeUpToCheckoutResult.andReturn();
         CheckoutStatusDTO resultDTO = buildObject(mvcResult.getResponse().getContentAsString(), CheckoutStatusDTO.class)
-        CheckoutStatusDTO checkoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), 1, CheckoutStatus.SCANNING);
+        CheckoutStatusDTO checkoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), checkoutNumber, CheckoutStatus.SCANNING);
 
         then: 'checkout becomes occupied by him'
         comeUpToCheckoutResult
@@ -195,47 +201,47 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
 
         when: 'cashier scans flakes twice'
         this.mockMvc.perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                1, dataContainer.flakes().barCode));
+                checkoutNumber, dataContainer.flakes().barCode));
 
         ResultActions resultAfterScanningFlakes = this.mockMvc.perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
-                1, dataContainer.flakes().barCode));
+                checkoutNumber, dataContainer.flakes().barCode));
 
         CheckoutScanDTO checkoutScanDetails = CheckoutScanDTO.builder()
-                .checkoutNumber(1)
+                .checkoutNumber(checkoutNumber)
                 .items(Sets.newHashSet(dataContainer.flakesDTO(2)))
-                .totalPrice(180L)
+                .totalPrice(Value.of(6))
                 .build()
-        then: 'price to pay increases to 180'
+        then: 'price to pay increases to 6'
         resultAfterScanningFlakes
                 .andExpect(status().isOk())
                 .andExpect(content().json(buildJson(checkoutScanDetails)))
 
-        when: 'client assign discount for his cart'
+        when: 'client assign "Multi-Items" discount for his cart'
         ResultActions resultAfterDiscount = this.mockMvc
                 .perform(put("/api/v1/discounts/multiItems/carts/{cartId}", resultDTO.getCartId()))
 
         DiscountDTO discountDTO = DiscountDTO.builder()
-                .priceBeforeDiscount(180)
-                .priceAfterDiscount(144)
+                .priceBeforeDiscount(Value.of(6))
+                .priceAfterDiscount(Value.of(4.8))
                 .type(DiscountType.MULTI_ITEMS)
                 .build();
 
-        then: 'price to pay decreased by 36'
+        then: 'final price is decreased by 20 percent'
         resultAfterDiscount.andExpect(status().isOk())
                 .andExpect(content().json(buildJson(discountDTO)))
 
         when: 'client pays for cart'
-        Integer amountPayment = 180
+        Integer amountPayment = 5
         ResultActions resultActions = this.mockMvc.perform(put("/api/v1/checkouts/{checkoutNumber}?amountPayment={amountPayment}",
-                1,
+                checkoutNumber,
                 amountPayment));
 
         CheckoutReceiptDTO checkoutReceiptDTO = CheckoutReceiptDTO.builder()
-                .finalPrice(144)
+                .finalPrice(Value.of(4.8))
                 .items(Sets.newHashSet(dataContainer.flakesDTO(2)))
                 .appliedDiscount(DiscountType.MULTI_ITEMS)
                 .status(CheckoutProcessStatus.PAID)
-                .change(36)
+                .change(Value.of(0.2))
                 .build();
 
         then: 'client gets receipt'

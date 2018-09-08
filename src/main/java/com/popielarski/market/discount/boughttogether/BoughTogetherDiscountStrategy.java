@@ -1,10 +1,12 @@
 package com.popielarski.market.discount.boughttogether;
 
 import com.popielarski.market.cart.Cart;
+import com.popielarski.market.common.Calculator;
 import com.popielarski.market.common.exception.LogicValidationException;
 import com.popielarski.market.discount.DiscountStrategy;
 import com.popielarski.market.discount.DiscountType;
 import com.popielarski.market.item.domain.Item;
+import com.popielarski.market.product.Price;
 import com.popielarski.market.product.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * This discount provides decreasing by 50% total price of pair
+ * This discount provides decreasing by 30% total price of pair
  */
 
 @Slf4j
@@ -46,15 +48,16 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
                 .collect(Collectors.toSet());
 
 
-        Long cartTotalPrice = cart.getTotalPriceOfItems();
+        Price cartTotalPrice = cart.getTotalPriceOfItems();
         TemporaryDiscountHolder temporaryDiscountHolder = new TemporaryDiscountHolder();
 
         discountItems
                 .forEach((pair) -> {
-                    temporaryDiscountHolder.increase(decreaseHalfAPrice(pair.getFirstProduct().getPrice(), pair.getSecondProduct().getPrice()));
+                    temporaryDiscountHolder.increase(decreaseHalfAPrice(pair.getFirstProduct().getPrice(),
+                            pair.getSecondProduct().getPrice()));
                 });
 
-        cart.setFinalPrice(cartTotalPrice - temporaryDiscountHolder.getValueToDecrease());
+        cart.setFinalPrice(Calculator.subtract(cartTotalPrice, temporaryDiscountHolder.getValueToDecrease()));
         cart.applyDiscount(DiscountType.BOUGHT_TOGETHER);
         return cart;
     }
@@ -68,8 +71,9 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
                 .count() > 1;
     }
 
-    private Long decreaseHalfAPrice(Long firstProductPrice, Long secondProductPrice) {
-        return firstProductPrice + secondProductPrice / 2;
+    private Price decreaseHalfAPrice(Price firstProductPrice, Price secondProductPrice) {
+        Price result = Calculator.add(firstProductPrice, secondProductPrice);
+        return Calculator.multiple(result, "0.30");
     }
 
     private List<Item> checkPairInCart(Cart cart, Product firstItem, Product secondItem) {
@@ -86,14 +90,14 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
     @Getter
     @Setter
     class TemporaryDiscountHolder {
-        private Long valueToDecrease;
+        private Price valueToDecrease;
 
         TemporaryDiscountHolder() {
-            valueToDecrease = 0L;
+            valueToDecrease = Price.zero();
         }
 
-        void increase(Long valueToDecrease) {
-            this.valueToDecrease += valueToDecrease;
+        void increase(Price valueToDecrease) {
+            this.valueToDecrease = Calculator.add(this.valueToDecrease, valueToDecrease);
         }
     }
 
