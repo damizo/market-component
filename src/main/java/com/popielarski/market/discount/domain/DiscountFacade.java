@@ -20,28 +20,22 @@ public class DiscountFacade {
     private final CartRepository cartRepository;
 
     public DiscountDTO addMultiItemsDiscount(Long cartId) {
-        Cart cartBeforeDiscount = cartRepository.findById(cartId)
-                .orElseThrow(() -> new LogicValidationException(String.format("Cart with id %d does not exist", cartId)));
-        log.debug("Cart with id %d has been found", cartId);
-
-        DiscountStrategy discountStrategy = discountStrategyFactory.getDiscountStrategy(DiscountType.MULTI_ITEMS);
-
-        Cart cartAfterDiscount = discountStrategy.calculateDiscount(cartBeforeDiscount);
-        cartRepository.save(cartAfterDiscount);
-        log.debug("After discount: {}", cartBeforeDiscount);
-
-        return discountMapper.toDiscountDTO(cartBeforeDiscount.getTotalPriceOfItems().toValue(),
-                cartAfterDiscount.getFinalPrice().toValue(),
-                DiscountType.MULTI_ITEMS);
+        log.info("Applying 'Multi Items' discount for cart with id: {}", cartId);
+        return applyDiscount(cartId, DiscountType.MULTI_ITEMS);
     }
 
-
     public DiscountDTO addBoughtTogetherDiscount(Long cartId) {
+        log.info("Applying 'Bought Together' discount for cart with id: {}", cartId);
+        return applyDiscount(cartId, DiscountType.BOUGHT_TOGETHER);
+    }
+
+    private DiscountDTO applyDiscount(Long cartId, DiscountType discountType) {
         Cart cartBeforeDiscount = cartRepository.findById(cartId)
                 .orElseThrow(() -> new LogicValidationException(String.format("Cart with id %d does not exist", cartId)));
         log.debug("Cart with id %d has been found", cartId);
 
-        DiscountStrategy discountStrategy = discountStrategyFactory.getDiscountStrategy(DiscountType.BOUGHT_TOGETHER);
+        validateCart(cartBeforeDiscount);
+        DiscountStrategy discountStrategy = discountStrategyFactory.getDiscountStrategy(discountType);
 
         Cart cartAfterDiscount = discountStrategy.calculateDiscount(cartBeforeDiscount);
         cartRepository.save(cartAfterDiscount);
@@ -49,6 +43,13 @@ public class DiscountFacade {
 
         return discountMapper.toDiscountDTO(cartBeforeDiscount.getTotalPriceOfItems().toValue(),
                 cartAfterDiscount.getFinalPrice().toValue(),
-                DiscountType.BOUGHT_TOGETHER);
+                discountType);
+    }
+
+    private void validateCart(Cart cartBeforeDiscount) {
+        if (cartBeforeDiscount.isDiscountApplied()) {
+            throw new LogicValidationException(String.format("Cart with id %s has already applied discount. " +
+                    "One cart might contains only one discount.", cartBeforeDiscount.getId()));
+        }
     }
 }

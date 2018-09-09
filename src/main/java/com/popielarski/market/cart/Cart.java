@@ -79,4 +79,8 @@ public class Cart extends BaseEntity {
         this.discountApplied = Boolean.TRUE;
         this.discount = discountType;
     }
+
+    public boolean isDiscountApplied(){
+        return this.discountApplied;
+    }
 }
