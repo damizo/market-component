@@ -14,12 +14,14 @@ public class DiscountController {
     private final DiscountFacade discountFacade;
 
     @PutMapping(value = "/boughtTogether/carts/{cartId}")
-    public DiscountDTO addBoughtTogetherDiscount(@PathVariable Long cartId) {
+    public DiscountDTO assignBoughtTogetherDiscount(@PathVariable Long cartId) {
         return discountFacade.addBoughtTogetherDiscount(cartId);
     }
 
     @PutMapping(value = "/multiItems/carts/{cartId}")
-    public DiscountDTO addMultiItemsDiscount(@PathVariable Long cartId) {
+    public DiscountDTO assignMultiItemsDiscount(@PathVariable Long cartId) {
         return discountFacade.addMultiItemsDiscount(cartId);
     }
+
+    //TODO: adding new discounts
 }

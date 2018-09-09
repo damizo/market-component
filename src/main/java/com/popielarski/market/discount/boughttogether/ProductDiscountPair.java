@@ -1,8 +1,7 @@
 package com.popielarski.market.discount.boughttogether;
 
 import com.popielarski.market.common.domain.BaseEntity;
-import com.popielarski.market.discount.boughttogether.BoughtTogetherDiscount;
-import com.popielarski.market.product.Product;
+import com.popielarski.market.product.domain.Product;
 import lombok.*;
 
 import javax.persistence.*;

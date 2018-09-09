@@ -1,4 +1,4 @@
-package com.popielarski.market.common;
+package com.popielarski.market.common.utils;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

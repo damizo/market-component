@@ -3,7 +3,7 @@ package com.popielarski.market.checkout.domain;
 
 import com.popielarski.market.cart.Cart;
 import com.popielarski.market.common.domain.InMemoryRepository;
-import com.popielarski.market.item.domain.Item;
+import com.popielarski.market.item.Item;
 
 import java.util.*;
 

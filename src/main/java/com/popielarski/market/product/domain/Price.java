@@ -1,13 +1,10 @@
-package com.popielarski.market.product;
+package com.popielarski.market.product.domain;
 
-import com.popielarski.market.common.Currency;
-import com.popielarski.market.common.MathUtils;
+import com.popielarski.market.common.domain.Currency;
+import com.popielarski.market.common.utils.MathUtils;
 import com.popielarski.market.common.domain.BaseEntity;
-import com.popielarski.market.common.domain.Value;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.popielarski.market.common.domain.PriceDTO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +16,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Price extends BaseEntity implements Serializable {
 
     @Column(name = "VALUE")
@@ -56,8 +54,8 @@ public class Price extends BaseEntity implements Serializable {
         return Price.of(BigDecimal.ZERO);
     }
 
-    public Value toValue() {
-        return Value.of(this);
+    public PriceDTO toValue() {
+        return PriceDTO.of(this);
     }
 
     public static BigDecimal bigDecimalOf(String value) {

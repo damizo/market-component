@@ -1,7 +1,6 @@
 package com.popielarski.market.item;
 
-import com.popielarski.market.item.domain.Item;
-import com.popielarski.market.product.Product;
+import com.popielarski.market.product.domain.Product;
 
 public class ItemFactory {
 

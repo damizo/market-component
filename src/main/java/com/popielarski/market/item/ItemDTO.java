@@ -1,7 +1,7 @@
-package com.popielarski.market.item.domain;
+package com.popielarski.market.item;
 
-import com.popielarski.market.common.Calculator;
-import com.popielarski.market.common.domain.Value;
+import com.popielarski.market.common.domain.Calculator;
+import com.popielarski.market.common.domain.PriceDTO;
 import lombok.*;
 
 @Data
@@ -11,11 +11,11 @@ import lombok.*;
 public class ItemDTO {
 
     private String name;
-    private Value price;
+    private PriceDTO price;
     private Integer quantity;
     private String barCode;
 
-    public Value getTotalPrice(){
+    public PriceDTO getTotalPrice(){
         return Calculator.multiple(quantity, price.getValue());
     }
 

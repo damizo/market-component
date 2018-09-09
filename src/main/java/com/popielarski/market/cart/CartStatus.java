@@ -1,4 +1,4 @@
-package com.popielarski.market.cart.domain;
+package com.popielarski.market.cart;
 
 public enum CartStatus {
     CREATED, PAID

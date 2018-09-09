@@ -1,8 +1,8 @@
 package com.popielarski.market.checkout.domain;
 
-import com.popielarski.market.common.domain.Value;
+import com.popielarski.market.common.domain.PriceDTO;
 import com.popielarski.market.discount.DiscountType;
-import com.popielarski.market.item.domain.ItemDTO;
+import com.popielarski.market.item.ItemDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,7 +14,7 @@ public class CheckoutScanDTO {
 
     private Integer checkoutNumber;
     private Set<ItemDTO> items;
-    private Value totalPrice;
+    private PriceDTO totalPrice;
     private Set<DiscountType> availableDiscounts;
 
 }

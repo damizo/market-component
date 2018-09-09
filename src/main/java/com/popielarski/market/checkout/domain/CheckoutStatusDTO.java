@@ -13,7 +13,6 @@ public class CheckoutStatusDTO {
     protected Integer checkoutNumber;
     protected CheckoutStatus status;
 
-
     public static class Builder {
 
         private Long cartId;

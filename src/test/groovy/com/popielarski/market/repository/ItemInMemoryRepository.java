@@ -1,8 +1,8 @@
 package com.popielarski.market.repository;
 
 import com.popielarski.market.common.domain.InMemoryRepository;
-import com.popielarski.market.item.domain.Item;
-import com.popielarski.market.item.domain.ItemRepository;
+import com.popielarski.market.item.Item;
+import com.popielarski.market.item.ItemRepository;
 
 public class ItemInMemoryRepository extends InMemoryRepository<Item> implements ItemRepository {
 

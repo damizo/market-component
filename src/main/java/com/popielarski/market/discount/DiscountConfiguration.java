@@ -1,4 +1,4 @@
-package com.popielarski.market.configuration;
+package com.popielarski.market.discount;
 
 import com.popielarski.market.cart.CartRepository;
 import com.popielarski.market.discount.DiscountFacade;

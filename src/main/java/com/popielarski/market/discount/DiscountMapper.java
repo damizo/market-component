@@ -1,10 +1,9 @@
 package com.popielarski.market.discount;
 
-import com.popielarski.market.cart.CartDTO;
-import com.popielarski.market.common.domain.Value;
+import com.popielarski.market.common.domain.PriceDTO;
 
 public class DiscountMapper {
-    public DiscountDTO toDiscountDTO(Value totalPriceBeforeDiscount, Value totalPriceAfterDiscount, DiscountType type) {
+    public DiscountDTO toDiscountDTO(PriceDTO totalPriceBeforeDiscount, PriceDTO totalPriceAfterDiscount, DiscountType type) {
         return DiscountDTO.builder()
                 .priceAfterDiscount(totalPriceAfterDiscount)
                 .priceBeforeDiscount(totalPriceBeforeDiscount)

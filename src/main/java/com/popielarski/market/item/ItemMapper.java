@@ -1,7 +1,5 @@
-package com.popielarski.market.item.domain;
+package com.popielarski.market.item;
 
-
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;

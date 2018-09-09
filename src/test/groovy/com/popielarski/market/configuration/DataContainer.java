@@ -1,12 +1,13 @@
 package com.popielarski.market.configuration;
 
-import com.popielarski.market.common.domain.Value;
+import com.popielarski.market.common.domain.PriceDTO;
 import com.popielarski.market.discount.boughttogether.BoughtTogetherDiscount;
 import com.popielarski.market.discount.boughttogether.ProductDiscountPair;
-import com.popielarski.market.item.domain.ItemDTO;
-import com.popielarski.market.item.domain.MultiItemsDiscount;
-import com.popielarski.market.product.Price;
-import com.popielarski.market.product.Product;
+import com.popielarski.market.item.ItemDTO;
+import com.popielarski.market.discount.multiitems.MultiItemsDiscount;
+import com.popielarski.market.product.domain.Price;
+import com.popielarski.market.product.domain.Product;
+import com.popielarski.market.product.domain.ProductDTO;
 
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class DataContainer {
         Product cola = cola();
         return ItemDTO.builder()
                 .name(cola.getName())
-                .price(Value.of(cola.getPrice()))
+                .price(PriceDTO.of(cola.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -56,7 +57,7 @@ public class DataContainer {
         Product snickers = snickers();
         return ItemDTO.builder()
                 .name(snickers.getName())
-                .price(Value.of(snickers.getPrice()))
+                .price(PriceDTO.of(snickers.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -75,7 +76,7 @@ public class DataContainer {
         return ItemDTO.builder()
                 .barCode(rafaello.getBarCode())
                 .name(rafaello.getName())
-                .price(Value.of(rafaello.getPrice()))
+                .price(PriceDTO.of(rafaello.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -94,7 +95,7 @@ public class DataContainer {
         return ItemDTO.builder()
                 .barCode(flakes.getBarCode())
                 .name(flakes.getName())
-                .price(Value.of(flakes.getPrice()))
+                .price(PriceDTO.of(flakes.getPrice()))
                 .quantity(quantity)
                 .build();
     }
@@ -108,13 +109,49 @@ public class DataContainer {
                 .build();
     }
 
+    public ProductDTO vodka() {
+        return ProductDTO.builder()
+                .barCode("P_01005")
+                .quantity(15)
+                .name("Absolvent")
+                .price(PriceDTO.of("15.00"))
+                .build();
+    }
+
     public ItemDTO wineDTO(Integer quantity) {
         Product wine = wine();
         return ItemDTO.builder()
                 .barCode(wine.getBarCode())
                 .name(wine.getName())
-                .price(Value.of(wine.getPrice()))
+                .price(PriceDTO.of(wine.getPrice()))
                 .quantity(quantity)
+                .build();
+    }
+
+    public ProductDTO cognac() {
+        return ProductDTO.builder()
+                .price(PriceDTO.of(230))
+                .quantity(10)
+                .name("Hennessy")
+                .barCode("X_9440")
+                .build();
+    }
+
+    public ProductDTO whisky() {
+        return ProductDTO.builder()
+                .price(PriceDTO.of(180))
+                .quantity(12)
+                .name("Chivas")
+                .barCode("X_5161")
+                .build();
+    }
+
+    public ProductDTO rum() {
+        return ProductDTO.builder()
+                .price(PriceDTO.of(140))
+                .quantity(10)
+                .name("Havanna")
+                .barCode("X_3101")
                 .build();
     }
 

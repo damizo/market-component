@@ -2,15 +2,14 @@ package com.popielarski.market.acceptance
 
 import com.google.common.collect.Sets
 import com.popielarski.market.IntegrationSpec
-import com.popielarski.market.ItemConfiguration
 import com.popielarski.market.TestUtils
 import com.popielarski.market.checkout.domain.*
-import com.popielarski.market.common.Calculator
+import com.popielarski.market.common.domain.Calculator
 import com.popielarski.market.common.domain.Quantity
-import com.popielarski.market.common.domain.Value
+import com.popielarski.market.common.domain.PriceDTO
 import com.popielarski.market.configuration.DataConfiguration
 import com.popielarski.market.configuration.DataContainer
-import com.popielarski.market.configuration.DiscountConfiguration
+import com.popielarski.market.discount.DiscountConfiguration
 import com.popielarski.market.discount.DiscountDTO
 import com.popielarski.market.discount.DiscountType
 import org.springframework.test.context.ContextConfiguration
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ContextConfiguration(classes =
         [
-                ItemConfiguration.class,
                 DiscountConfiguration.class,
                 DataConfiguration.class
         ])
@@ -60,7 +58,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
         CheckoutScanDTO expectedCheckoutScanDTO = CheckoutScanDTO.builder()
                 .checkoutNumber(checkoutNumber)
                 .items(Sets.newHashSet(dataContainer.wineDTO(Quantity.ONE)))
-                .totalPrice(Value.of(20))
+                .totalPrice(PriceDTO.of(20))
                 .build()
 
         then: 'price to pay increases to 350'
@@ -73,7 +71,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 .perform(post("/api/v1/checkouts/{checkoutNumber}/carts/{barCode}",
                 checkoutNumber, dataContainer.flakes().barCode));
 
-        expectedCheckoutScanDTO.totalPrice = Calculator.add(expectedCheckoutScanDTO.totalPrice, Value.of(3))
+        expectedCheckoutScanDTO.totalPrice = Calculator.add(expectedCheckoutScanDTO.totalPrice, PriceDTO.of(3))
         expectedCheckoutScanDTO.items = Sets.newHashSet(
                 dataContainer.wineDTO(Quantity.ONE),
                 dataContainer.flakesDTO(Quantity.ONE))
@@ -94,8 +92,8 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
         CheckoutReceiptDTO expectedCheckoutSummaryDTO = CheckoutReceiptDTO.builder()
                 .status(CheckoutProcessStatus.PAID)
                 .items(Sets.newHashSet(dataContainer.flakesDTO(Quantity.ONE), dataContainer.wineDTO(Quantity.ONE)))
-                .finalPrice(Value.of(amountPayment))
-                .change(Value.of(0))
+                .finalPrice(PriceDTO.of(amountPayment))
+                .change(PriceDTO.of(0))
                 .build()
 
         then: 'client gets receipt without any discount'
@@ -129,7 +127,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
         CheckoutScanDTO expectedCheckoutScanDetails = CheckoutScanDTO.builder()
                 .checkoutNumber(checkoutNumber)
                 .items(Sets.newHashSet(dataContainer.wineDTO(Quantity.TWO)))
-                .totalPrice(Value.of(40))
+                .totalPrice(PriceDTO.of(40))
                 .build()
 
         then: 'price to pay increases to 40'
@@ -142,7 +140,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 checkoutNumber, dataContainer.rafaello().barCode));
 
         expectedCheckoutScanDetails.items.add(dataContainer.rafaelloDTO(Quantity.ONE))
-        expectedCheckoutScanDetails.totalPrice = Calculator.add(expectedCheckoutScanDetails.totalPrice, Value.of(10))
+        expectedCheckoutScanDetails.totalPrice = Calculator.add(expectedCheckoutScanDetails.totalPrice, PriceDTO.of(10))
 
         then: 'price to pay increases to 50'
         resultAfterScanningRafaello
@@ -154,8 +152,8 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 .perform(put("/api/v1/discounts/boughtTogether/carts/{cartId}", resultDTO.getCartId()))
 
         DiscountDTO discountDTO = DiscountDTO.builder()
-                .priceBeforeDiscount(Value.of(50))
-                .priceAfterDiscount(Value.of(41))
+                .priceBeforeDiscount(PriceDTO.of(50))
+                .priceAfterDiscount(PriceDTO.of(41))
                 .type(DiscountType.BOUGHT_TOGETHER)
                 .build();
 
@@ -170,11 +168,11 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 amountPayment));
 
         CheckoutReceiptDTO checkoutReceiptDTO = CheckoutReceiptDTO.builder()
-                .finalPrice(Value.of(41))
+                .finalPrice(PriceDTO.of(41))
                 .items(Sets.newHashSet(dataContainer.wineDTO(Quantity.TWO), dataContainer.rafaelloDTO(Quantity.ONE)))
                 .appliedDiscount(DiscountType.BOUGHT_TOGETHER)
                 .status(CheckoutProcessStatus.PAID)
-                .change(Value.of(19))
+                .change(PriceDTO.of(19))
                 .build();
 
         then: 'client gets receipt'
@@ -209,7 +207,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
         CheckoutScanDTO checkoutScanDetails = CheckoutScanDTO.builder()
                 .checkoutNumber(checkoutNumber)
                 .items(Sets.newHashSet(dataContainer.flakesDTO(2)))
-                .totalPrice(Value.of(6))
+                .totalPrice(PriceDTO.of(6))
                 .build()
         then: 'price to pay increases to 6'
         resultAfterScanningFlakes
@@ -221,8 +219,8 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 .perform(put("/api/v1/discounts/multiItems/carts/{cartId}", resultDTO.getCartId()))
 
         DiscountDTO discountDTO = DiscountDTO.builder()
-                .priceBeforeDiscount(Value.of(6))
-                .priceAfterDiscount(Value.of(4.8))
+                .priceBeforeDiscount(PriceDTO.of(6))
+                .priceAfterDiscount(PriceDTO.of(4.8))
                 .type(DiscountType.MULTI_ITEMS)
                 .build();
 
@@ -237,11 +235,11 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 amountPayment));
 
         CheckoutReceiptDTO checkoutReceiptDTO = CheckoutReceiptDTO.builder()
-                .finalPrice(Value.of(4.8))
+                .finalPrice(PriceDTO.of(4.8))
                 .items(Sets.newHashSet(dataContainer.flakesDTO(2)))
                 .appliedDiscount(DiscountType.MULTI_ITEMS)
                 .status(CheckoutProcessStatus.PAID)
-                .change(Value.of(0.2))
+                .change(PriceDTO.of(0.2))
                 .build();
 
         then: 'client gets receipt'
@@ -249,12 +247,5 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 .andExpect(content().json(buildJson(checkoutReceiptDTO)))
     }
 
-    private static final String buildJson(Object object) {
-        return TestUtils.mapToJson(object);
-    }
-
-    private static final <T> T buildObject(String json, Class<T> clazz) {
-        return TestUtils.mapToObject(json, clazz);
-    }
 
 }

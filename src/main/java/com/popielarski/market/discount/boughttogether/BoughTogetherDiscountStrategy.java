@@ -1,13 +1,13 @@
 package com.popielarski.market.discount.boughttogether;
 
 import com.popielarski.market.cart.Cart;
-import com.popielarski.market.common.Calculator;
+import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.common.exception.LogicValidationException;
 import com.popielarski.market.discount.DiscountStrategy;
 import com.popielarski.market.discount.DiscountType;
-import com.popielarski.market.item.domain.Item;
-import com.popielarski.market.product.Price;
-import com.popielarski.market.product.Product;
+import com.popielarski.market.item.Item;
+import com.popielarski.market.product.domain.Price;
+import com.popielarski.market.product.domain.Product;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.popielarski.market.common;
+package com.popielarski.market.common.utils;
 
 import java.util.Random;
 

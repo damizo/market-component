@@ -1,13 +1,12 @@
-package com.popielarski.market.item.domain;
+package com.popielarski.market.discount.multiitems;
 
 import com.google.common.collect.Sets;
 import com.popielarski.market.discount.Discount;
 import com.popielarski.market.discount.DiscountType;
 import com.popielarski.market.discount.DiscountUnit;
-import com.popielarski.market.product.Product;
+import com.popielarski.market.product.domain.Product;
 import lombok.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;

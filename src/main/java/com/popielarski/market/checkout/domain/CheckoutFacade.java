@@ -4,14 +4,14 @@ import com.popielarski.market.cart.Cart;
 import com.popielarski.market.cart.CartDTO;
 import com.popielarski.market.cart.CartMapper;
 import com.popielarski.market.cart.CartRepository;
+import com.popielarski.market.common.utils.PriceUtils;
 import com.popielarski.market.common.exception.LogicValidationException;
-import com.popielarski.market.common.PriceUtils;
 import com.popielarski.market.item.ItemFactory;
-import com.popielarski.market.item.domain.Item;
-import com.popielarski.market.item.domain.ItemMapper;
-import com.popielarski.market.item.domain.ItemRepository;
-import com.popielarski.market.product.Product;
-import com.popielarski.market.product.ProductRepository;
+import com.popielarski.market.item.Item;
+import com.popielarski.market.item.ItemMapper;
+import com.popielarski.market.item.ItemRepository;
+import com.popielarski.market.product.domain.Product;
+import com.popielarski.market.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,11 +26,7 @@ public class CheckoutFacade {
 
     private final CheckoutCacheRepository checkoutCacheRepository;
 
-    private final ItemRepository itemRepository;
-
     private final ItemFactory itemFactory;
-
-    private final ItemMapper itemMapper;
 
     private final CheckoutMapper checkoutMapper;
 
@@ -47,14 +43,15 @@ public class CheckoutFacade {
                         "probably scanning in this checkout has not been initialized", checkoutNumber)));
 
         if (PriceUtils.isCovered(cart.getPrice().toValue(), amount)) {
-            checkoutCacheRepository.deleteById(Long.valueOf(checkoutNumber));
-            cartRepository.save(cart);
+            deleteFromCacheAndSaveCart(checkoutNumber, cart);
 
             CartDTO cartDTO = cartMapper.toDTO(cart);
             return checkoutMapper.toReceiptDTO(cart.getPrice().toValue(), checkoutNumber, amount, cartDTO);
         }
 
-        throw new LogicValidationException(String.format("Amount doesn't cover total price, required amount: %d", cart.getFinalPrice()));
+        throw new LogicValidationException(String.format("Amount doesn't cover total price, required amount: %d", cart.getFinalPrice()
+                .getValue()
+                .intValue()));
     }
 
 
@@ -72,17 +69,12 @@ public class CheckoutFacade {
                         "probably scanning in this checkout has not been initialized", checkoutNumber)));
 
         if (itemToScanOptional.isPresent()) {
-            cart.increaseQuantityOfItem(Item.DEFAULT_QUANTITY, barCode);
-            checkoutCacheRepository.save(checkoutNumber, cart);
+            updateQuantityAndSave(checkoutNumber, barCode, cart);
         } else {
-            Item item = itemFactory.create(product);
-            cart.addItem(item);
-            Cart persistedCart = cartRepository.save(cart);
-            checkoutCacheRepository.save(checkoutNumber, persistedCart);
+            addItemAndSave(checkoutNumber, product, cart);
         }
 
-        product.decreaseQuantity(Item.DEFAULT_QUANTITY);
-        productRepository.save(product);
+        decreaseQuantity(product);
 
         CartDTO cartDTO = cartMapper.toDTO(cart);
         return checkoutMapper.toScanDTO(checkoutNumber, cartDTO);
@@ -104,4 +96,25 @@ public class CheckoutFacade {
         }
     }
 
+    private void decreaseQuantity(Product product) {
+        product.decreaseQuantity(Item.DEFAULT_QUANTITY);
+        productRepository.save(product);
+    }
+
+    private void addItemAndSave(Integer checkoutNumber, Product product, Cart cart) {
+        Item item = itemFactory.create(product);
+        cart.addItem(item);
+        Cart persistedCart = cartRepository.save(cart);
+        checkoutCacheRepository.save(checkoutNumber, persistedCart);
+    }
+
+    private void updateQuantityAndSave(Integer checkoutNumber, String barCode, Cart cart) {
+        cart.increaseQuantityOfItem(Item.DEFAULT_QUANTITY, barCode);
+        checkoutCacheRepository.save(checkoutNumber, cart);
+    }
+
+    private void deleteFromCacheAndSaveCart(Integer checkoutNumber, Cart cart) {
+        checkoutCacheRepository.deleteById(Long.valueOf(checkoutNumber));
+        cartRepository.save(cart);
+    }
 }

@@ -1,6 +1,6 @@
 package com.popielarski.market.discount;
 
-import com.popielarski.market.common.domain.Value;
+import com.popielarski.market.common.domain.PriceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DiscountDTO {
     private DiscountType type;
-    private Value priceBeforeDiscount;
-    private Value priceAfterDiscount;
+    private PriceDTO priceBeforeDiscount;
+    private PriceDTO priceAfterDiscount;
 }

@@ -1,11 +1,11 @@
-package com.popielarski.market.item.domain;
+package com.popielarski.market.item;
 
 
 import com.popielarski.market.cart.Cart;
-import com.popielarski.market.common.Calculator;
+import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.common.domain.BaseEntity;
-import com.popielarski.market.product.Price;
-import com.popielarski.market.product.Product;
+import com.popielarski.market.product.domain.Price;
+import com.popielarski.market.product.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

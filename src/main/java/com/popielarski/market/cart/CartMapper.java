@@ -1,12 +1,10 @@
 package com.popielarski.market.cart;
 
-import com.google.common.collect.Sets;
 import com.popielarski.market.discount.DiscountType;
-import com.popielarski.market.item.domain.ItemDTO;
-import com.popielarski.market.item.domain.ItemMapper;
+import com.popielarski.market.item.ItemDTO;
+import com.popielarski.market.item.ItemMapper;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 
