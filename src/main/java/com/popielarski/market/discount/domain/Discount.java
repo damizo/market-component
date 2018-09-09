@@ -1,4 +1,4 @@
-package com.popielarski.market.discount;
+package com.popielarski.market.discount.domain;
 
 
 import com.popielarski.market.common.domain.BaseEntity;
@@ -15,14 +15,15 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Discount extends BaseEntity {
 
+    @Column(name = "DESCRIPTION")
     protected String description;
 
     @Column(name = "TYPE", updatable = false)
     @Enumerated(EnumType.STRING)
-    private DiscountType type;
+    protected DiscountType type;
 
     @Column(name = "UNIT", updatable = false)
     @Enumerated
-    private DiscountUnit unit;
+    protected DiscountUnit unit;
 
 }

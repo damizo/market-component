@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/checkouts")
 @RequiredArgsConstructor
 @Slf4j
-public class CheckoutController {
+class CheckoutController {
 
     private final CheckoutFacade checkoutFacade;
 

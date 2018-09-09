@@ -3,17 +3,20 @@ package com.popielarski.market.integration
 import com.popielarski.market.IntegrationSpec
 import com.popielarski.market.common.domain.PriceDTO
 import com.popielarski.market.common.utils.PageableHelper
-import com.popielarski.market.configuration.DataContainer
+import com.popielarski.market.infrastructure.build.Profiles
 import com.popielarski.market.product.domain.ProductConfiguration
 import com.popielarski.market.product.domain.ProductDTO
+import com.popielarski.market.product.domain.ProductDataContainer
 import com.popielarski.market.product.domain.ProductFacade
 import com.popielarski.market.product.domain.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Profile
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.ResultActions
@@ -34,10 +37,10 @@ class ProductManagementIntegrationSpec extends IntegrationSpec {
     @Autowired
     private ProductRepository productRepository;
 
-    private DataContainer dataContainer;
+    private ProductDataContainer dataContainer;
 
     def setup() {
-        dataContainer = new DataContainer();
+        dataContainer = new ProductDataContainer();
     }
 
     def 'should add new product'() {

@@ -1,17 +1,17 @@
-package com.popielarski.market.configuration;
+package com.popielarski.market.product.domain;
 
 import com.popielarski.market.common.domain.PriceDTO;
-import com.popielarski.market.discount.boughttogether.BoughtTogetherDiscount;
-import com.popielarski.market.discount.boughttogether.ProductDiscountPair;
+import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
+import com.popielarski.market.discount.domain.boughttogether.ProductDiscountPair;
+import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import com.popielarski.market.item.ItemDTO;
-import com.popielarski.market.discount.multiitems.MultiItemsDiscount;
 import com.popielarski.market.product.domain.Price;
 import com.popielarski.market.product.domain.Product;
 import com.popielarski.market.product.domain.ProductDTO;
 
 import java.util.Set;
 
-public class DataContainer {
+public class ProductDataContainer {
     public Product cola() {
         return Product.builder()
                 .barCode("P_00001")

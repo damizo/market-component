@@ -2,8 +2,13 @@ package com.popielarski.market.unit
 
 import com.popielarski.market.common.domain.Calculator
 import com.popielarski.market.common.domain.PriceDTO
+import com.popielarski.market.infrastructure.build.Profiles
 import com.popielarski.market.product.domain.Price
+import org.springframework.context.annotation.Profile
+import org.springframework.test.annotation.IfProfileValue
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
+
 
 class CalculatorSpec extends Specification {
 

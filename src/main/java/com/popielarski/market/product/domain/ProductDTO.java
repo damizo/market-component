@@ -9,6 +9,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class ProductDTO extends BaseDTO {
     private String name;
     private PriceDTO price;
@@ -24,20 +25,4 @@ public class ProductDTO extends BaseDTO {
         this.barCode = barCode;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProductDTO)) return false;
-        if (!super.equals(o)) return false;
-        ProductDTO that = (ProductDTO) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(price, that.price) &&
-                Objects.equals(quantity, that.quantity) &&
-                Objects.equals(barCode, that.barCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, price, quantity, barCode);
-    }
 }

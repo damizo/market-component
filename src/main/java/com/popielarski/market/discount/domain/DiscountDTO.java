@@ -1,4 +1,4 @@
-package com.popielarski.market.discount;
+package com.popielarski.market.discount.domain;
 
 import com.popielarski.market.common.domain.PriceDTO;
 import lombok.AllArgsConstructor;

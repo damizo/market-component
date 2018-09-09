@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class CheckoutConfiguration {
 
     @Bean
-    public CheckoutFacade checkoutFacade(ItemRepository itemRepository, ProductRepository productRepository, CartRepository cartRepository) {
+    public CheckoutFacade checkoutFacade(ProductRepository productRepository, CartRepository cartRepository) {
         ItemMapper itemMapper = new ItemMapper();
         CartMapper cartMapper = new CartMapper(itemMapper);
         return new CheckoutFacade(new CheckoutCacheRepository(), new ItemFactory(),

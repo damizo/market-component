@@ -46,7 +46,7 @@ public class CheckoutFacade {
             deleteFromCacheAndSaveCart(checkoutNumber, cart);
 
             CartDTO cartDTO = cartMapper.toDTO(cart);
-            return checkoutMapper.toReceiptDTO(cart.getPrice().toValue(), checkoutNumber, amount, cartDTO);
+            return checkoutMapper.toReceiptDTO(cart.getPrice().toValue(), amount, cartDTO);
         }
 
         throw new LogicValidationException(String.format("Amount doesn't cover total price, required amount: %d", cart.getFinalPrice()
@@ -74,8 +74,6 @@ public class CheckoutFacade {
             addItemAndSave(checkoutNumber, product, cart);
         }
 
-        decreaseQuantity(product);
-
         CartDTO cartDTO = cartMapper.toDTO(cart);
         return checkoutMapper.toScanDTO(checkoutNumber, cartDTO);
     }
@@ -92,12 +90,11 @@ public class CheckoutFacade {
             checkoutCacheRepository.save(checkoutNumber, cart);
 
             log.debug("Checkout is ready to scan items");
-            return checkoutMapper.toStatusDTO(cart.getId(), checkoutNumber, CheckoutStatus.SCANNING);
+            return checkoutMapper.toStatusDTO(cart.getId(), checkoutNumber, CheckoutProcessStatus.WHILE_SCANNING);
         }
     }
 
     private void decreaseQuantity(Product product) {
-        product.decreaseQuantity(Item.DEFAULT_QUANTITY);
         productRepository.save(product);
     }
 

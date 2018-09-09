@@ -11,20 +11,20 @@ public class CheckoutStatusDTO {
 
     protected Long cartId;
     protected Integer checkoutNumber;
-    protected CheckoutStatus status;
+    protected CheckoutProcessStatus status;
 
     public static class Builder {
 
         private Long cartId;
         private Integer checkoutNumber;
-        private CheckoutStatus status;
+        private CheckoutProcessStatus status;
 
         Builder checkoutNumber(Integer checkoutNumber) {
             this.checkoutNumber = checkoutNumber;
             return this;
         }
 
-        Builder status(CheckoutStatus status) {
+        Builder status(CheckoutProcessStatus status) {
             this.status = status;
             return this;
         }

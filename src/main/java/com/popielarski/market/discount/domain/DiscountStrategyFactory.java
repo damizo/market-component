@@ -1,9 +1,9 @@
-package com.popielarski.market.discount;
+package com.popielarski.market.discount.domain;
 
-import com.popielarski.market.discount.boughttogether.BoughTogetherDiscountStrategy;
-import com.popielarski.market.discount.multiitems.MultiItemsDiscountStrategy;
+import com.popielarski.market.discount.domain.boughttogether.BoughTogetherDiscountStrategy;
+import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscountStrategy;
 
-public class DiscountStrategyFactory {
+ class DiscountStrategyFactory {
 
     public DiscountStrategy getDiscountStrategy(DiscountType type) {
         DiscountStrategy discountStrategy = null;

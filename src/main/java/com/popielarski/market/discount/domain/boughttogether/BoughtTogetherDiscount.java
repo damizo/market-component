@@ -1,11 +1,12 @@
-package com.popielarski.market.discount.boughttogether;
+package com.popielarski.market.discount.domain.boughttogether;
 
 import com.google.common.collect.Sets;
-import com.popielarski.market.discount.Discount;
-import com.popielarski.market.discount.DiscountType;
-import com.popielarski.market.discount.DiscountUnit;
+import com.popielarski.market.discount.domain.Discount;
+import com.popielarski.market.discount.domain.DiscountType;
+import com.popielarski.market.discount.domain.DiscountUnit;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "BOUGH_TOGETHER_DISCOUNTS")
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BoughtTogetherDiscount extends Discount {
 
     @OneToMany(cascade = CascadeType.ALL)

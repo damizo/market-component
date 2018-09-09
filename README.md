@@ -1,29 +1,18 @@
-Checkout Component 3.0
-Business requirements:
-1. Design and implement market checkout component with readable API that calculates the
-total price of a number of carts.
-2. Checkout mechanism can scan carts and return actual price (is stateful).
-3. Our goods are priced individually.
-4. Some carts are multi-priced: buy N of them, and they’ll cost you Y cents.
-Item Price Unit Special Price
-A 40 3 for 70
-B 10 2 for 15
-C 30 4 for 60
-D 25 2 for 40
-5. Client receives receipt containing list of all products with corresponding prices after
-payment.
-6. Some carts are cheaper when bought together - buy item X with item Y and save Z
-cents.
-Technical requirements:
-1. The output of this task should be a project with buildable production ready service, that
-can be executed independently of the source code.
-2. Project should include all tests, including unit, integration and acceptance tests.
-3. The service should expose REST api, without any UI.
-4. You can use gradle, maven or any other building tool.
-5. It ought to be written in Java 8.
-6. If requested, please use Spring or any other framework, otherwise, the choice is yours.
+**Market-Component**
 
--------------------------------------------------------------------------------------------
+**1.** Setting up environment:
 
+Application has three different profiles (their correspond your purposes). Set up has to be convenient and easy. You can set up application on your local machine without any external services if you want to, but it depends on your profile.
 
+ **DEV** 
+ This profile is default. Tests are turned off and application running on that profile uses **H2** database.
+ It is the simplest way to run application.
+	 
+	 mvn clean install
+	 mvn spring-boot:run
 
+That's it, you don't have to do anything else.
+
+**TEST**
+Profile created with unit & integration & acceptance tests in mind. It uses **H2** database as well. It's pretty 
+similar to profile above, but main purpose of this profile is to run all tests.

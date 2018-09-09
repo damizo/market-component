@@ -1,10 +1,10 @@
-package com.popielarski.market.discount.multiitems;
+package com.popielarski.market.discount.domain.multiitems;
 
 import com.popielarski.market.cart.Cart;
 import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.common.exception.LogicValidationException;
-import com.popielarski.market.discount.DiscountStrategy;
-import com.popielarski.market.discount.DiscountType;
+import com.popielarski.market.discount.domain.DiscountStrategy;
+import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.Item;
 import com.popielarski.market.item.ItemRepository;
 import com.popielarski.market.product.domain.Price;
@@ -22,10 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MultiItemsDiscountStrategy implements DiscountStrategy {
-
-    private MultiItemsDiscountRepository discountRepository;
-    private MultiItemsDiscountFactory multiItemsDiscountFactory;
-    private ItemRepository itemRepository;
 
     @Override
     public Cart calculateDiscount(Cart cart) {

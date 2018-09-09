@@ -1,9 +1,9 @@
 package com.popielarski.market.product.domain;
 
 import com.popielarski.market.common.domain.BaseEntity;
-import com.popielarski.market.discount.boughttogether.BoughtTogetherDiscount;
+import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
 import com.popielarski.market.item.Item;
-import com.popielarski.market.discount.multiitems.MultiItemsDiscount;
+import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

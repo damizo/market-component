@@ -1,4 +1,4 @@
-package com.popielarski.market.discount.boughttogether;
+package com.popielarski.market.discount.domain.boughttogether;
 
 import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.product.domain.Product;

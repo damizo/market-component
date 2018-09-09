@@ -1,6 +1,6 @@
 package com.popielarski.market.cart;
 
-import com.popielarski.market.discount.DiscountType;
+import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.ItemDTO;
 import com.popielarski.market.item.ItemMapper;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.popielarski.market.discount.boughttogether;
+package com.popielarski.market.discount.domain.boughttogether;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

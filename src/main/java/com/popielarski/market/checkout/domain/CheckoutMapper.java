@@ -7,7 +7,7 @@ import com.popielarski.market.common.domain.PriceDTO;
 
 public class CheckoutMapper {
 
-    public CheckoutStatusDTO toStatusDTO(Long id, Integer checkoutNumber, CheckoutStatus status) {
+    public CheckoutStatusDTO toStatusDTO(Long id, Integer checkoutNumber, CheckoutProcessStatus status) {
         return new CheckoutStatusDTO.Builder()
                 .cartId(id)
                 .checkoutNumber(checkoutNumber)
@@ -15,7 +15,7 @@ public class CheckoutMapper {
                 .build();
     }
 
-    public CheckoutReceiptDTO toReceiptDTO(PriceDTO price, Integer checkoutNumber, Integer amount, CartDTO cartDTO) {
+    public CheckoutReceiptDTO toReceiptDTO(PriceDTO price, Integer amount, CartDTO cartDTO) {
         return CheckoutReceiptDTO.builder()
                 .status(CheckoutProcessStatus.PAID)
                 .finalPrice(price)

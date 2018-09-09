@@ -4,15 +4,17 @@ import com.google.common.collect.Sets;
 import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.common.domain.BaseDTO;
 import com.popielarski.market.common.domain.PriceDTO;
-import com.popielarski.market.discount.DiscountType;
+import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.ItemDTO;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CartDTO extends BaseDTO {
 
     private Set<ItemDTO> items = Sets.newHashSet();

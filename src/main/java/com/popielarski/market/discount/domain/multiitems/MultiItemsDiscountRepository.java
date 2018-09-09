@@ -1,4 +1,4 @@
-package com.popielarski.market.discount.multiitems;
+package com.popielarski.market.discount.domain.multiitems;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

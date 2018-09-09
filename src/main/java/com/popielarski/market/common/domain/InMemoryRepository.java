@@ -10,8 +10,6 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-
-//TODO: to refactor
 public class InMemoryRepository<E> implements JpaRepository<E, Long> {
     protected ConcurrentHashMap<Long, E> map = new ConcurrentHashMap<>();
 

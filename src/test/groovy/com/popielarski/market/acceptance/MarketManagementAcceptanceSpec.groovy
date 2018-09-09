@@ -2,16 +2,19 @@ package com.popielarski.market.acceptance
 
 import com.google.common.collect.Sets
 import com.popielarski.market.IntegrationSpec
-import com.popielarski.market.TestUtils
 import com.popielarski.market.checkout.domain.*
 import com.popielarski.market.common.domain.Calculator
 import com.popielarski.market.common.domain.Quantity
 import com.popielarski.market.common.domain.PriceDTO
-import com.popielarski.market.configuration.DataConfiguration
-import com.popielarski.market.configuration.DataContainer
-import com.popielarski.market.discount.DiscountConfiguration
-import com.popielarski.market.discount.DiscountDTO
-import com.popielarski.market.discount.DiscountType
+import com.popielarski.market.discount.domain.DiscountConfiguration
+import com.popielarski.market.discount.domain.DiscountDTO
+import com.popielarski.market.discount.domain.DiscountType
+import com.popielarski.market.infrastructure.build.Profiles
+import com.popielarski.market.product.domain.ProductConfiguration
+import com.popielarski.market.product.domain.ProductDataContainer
+import org.springframework.context.annotation.Profile
+import org.springframework.test.annotation.IfProfileValue
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.ResultActions
@@ -23,14 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes =
         [
                 DiscountConfiguration.class,
-                DataConfiguration.class
+                ProductConfiguration.class
         ])
 class MarketManagementAcceptanceSpec extends IntegrationSpec {
 
-    private DataContainer dataContainer;
+    private ProductDataContainer dataContainer;
 
     def setup() {
-        dataContainer = new DataContainer();
+        dataContainer = new ProductDataContainer();
     }
 
     def 'should buy 2 items without any discount'() {
@@ -43,7 +46,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
         CheckoutStatusDTO resultDTO = buildObject(mvcResult.getResponse().getContentAsString(), CheckoutStatusDTO.class)
         CheckoutStatusDTO expectedCheckoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(),
                 checkoutNumber,
-                CheckoutStatus.SCANNING);
+                CheckoutProcessStatus.WHILE_SCANNING);
 
         then: 'checkout becomes occupied by him'
         comeUpToCheckoutResult
@@ -110,7 +113,9 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
 
         MvcResult mvcResult = comeUpToCheckoutResult.andReturn();
         CheckoutStatusDTO resultDTO = buildObject(mvcResult.getResponse().getContentAsString(), CheckoutStatusDTO.class)
-        CheckoutStatusDTO expectedCheckoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), checkoutNumber, CheckoutStatus.SCANNING);
+        CheckoutStatusDTO expectedCheckoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(),
+                checkoutNumber,
+                CheckoutProcessStatus.WHILE_SCANNING);
 
         then: 'checkout becomes occupied by him'
         comeUpToCheckoutResult
@@ -190,7 +195,9 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
 
         MvcResult mvcResult = comeUpToCheckoutResult.andReturn();
         CheckoutStatusDTO resultDTO = buildObject(mvcResult.getResponse().getContentAsString(), CheckoutStatusDTO.class)
-        CheckoutStatusDTO checkoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(), checkoutNumber, CheckoutStatus.SCANNING);
+        CheckoutStatusDTO checkoutStatusDTO = new CheckoutStatusDTO(resultDTO.getCartId(),
+                checkoutNumber,
+                CheckoutProcessStatus.WHILE_SCANNING);
 
         then: 'checkout becomes occupied by him'
         comeUpToCheckoutResult

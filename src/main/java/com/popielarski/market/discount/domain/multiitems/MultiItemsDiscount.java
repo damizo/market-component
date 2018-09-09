@@ -1,9 +1,9 @@
-package com.popielarski.market.discount.multiitems;
+package com.popielarski.market.discount.domain.multiitems;
 
 import com.google.common.collect.Sets;
-import com.popielarski.market.discount.Discount;
-import com.popielarski.market.discount.DiscountType;
-import com.popielarski.market.discount.DiscountUnit;
+import com.popielarski.market.discount.domain.Discount;
+import com.popielarski.market.discount.domain.DiscountType;
+import com.popielarski.market.discount.domain.DiscountUnit;
 import com.popielarski.market.product.domain.Product;
 import lombok.*;
 

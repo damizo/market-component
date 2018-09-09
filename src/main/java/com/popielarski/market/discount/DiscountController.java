@@ -1,6 +1,8 @@
 package com.popielarski.market.discount;
 
 
+import com.popielarski.market.discount.domain.DiscountDTO;
+import com.popielarski.market.discount.domain.DiscountFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/discounts")
 @RequiredArgsConstructor
 @Slf4j
-public class DiscountController {
+class DiscountController {
 
     private final DiscountFacade discountFacade;
 

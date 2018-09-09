@@ -1,10 +1,10 @@
-package com.popielarski.market.discount.boughttogether;
+package com.popielarski.market.discount.domain.boughttogether;
 
 import com.popielarski.market.cart.Cart;
 import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.common.exception.LogicValidationException;
-import com.popielarski.market.discount.DiscountStrategy;
-import com.popielarski.market.discount.DiscountType;
+import com.popielarski.market.discount.domain.DiscountStrategy;
+import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.Item;
 import com.popielarski.market.product.domain.Price;
 import com.popielarski.market.product.domain.Product;
@@ -39,15 +39,7 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
             throw new LogicValidationException(String.format("Cart with id %d does not contain items that are allowed to discount", cart.getId()));
         }
 
-        Set<ProductDiscountPair> discountItems = items.stream()
-                .map(Item::getProduct)
-                .map(Product::getBoughtTogetherDiscount)
-                .map(BoughtTogetherDiscount::getProductPairs)
-                .flatMap(Set::stream)
-                .filter((pair) -> pairExistsInCart(cart, pair))
-                .collect(Collectors.toSet());
-
-
+        Set<ProductDiscountPair> discountItems = getExistingPairsFromCart(cart, items);
         Price cartTotalPrice = cart.getTotalPriceOfItems();
         TemporaryDiscountHolder temporaryDiscountHolder = new TemporaryDiscountHolder();
 
@@ -60,6 +52,16 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
         cart.setFinalPrice(Calculator.subtract(cartTotalPrice, temporaryDiscountHolder.getValueToDecrease()));
         cart.applyDiscount(DiscountType.BOUGHT_TOGETHER);
         return cart;
+    }
+
+    private Set<ProductDiscountPair> getExistingPairsFromCart(Cart cart, Set<Item> items) {
+        return items.stream()
+                    .map(Item::getProduct)
+                    .map(Product::getBoughtTogetherDiscount)
+                    .map(BoughtTogetherDiscount::getProductPairs)
+                    .flatMap(Set::stream)
+                    .filter((pair) -> pairExistsInCart(cart, pair))
+                    .collect(Collectors.toSet());
     }
 
     private boolean pairExistsInCart(Cart cart, ProductDiscountPair pair) {

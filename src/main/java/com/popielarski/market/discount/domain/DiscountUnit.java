@@ -1,4 +1,4 @@
-package com.popielarski.market.discount;
+package com.popielarski.market.discount.domain;
 
 public enum DiscountUnit {
     PERCENT, VALUE

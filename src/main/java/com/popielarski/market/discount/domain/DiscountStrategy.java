@@ -1,4 +1,4 @@
-package com.popielarski.market.discount;
+package com.popielarski.market.discount.domain;
 
 import com.popielarski.market.cart.Cart;
 
