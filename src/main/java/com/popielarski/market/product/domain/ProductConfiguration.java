@@ -32,11 +32,14 @@ public class ProductConfiguration extends ProductDataContainer {
                     .newHashSet(pair(wine, rafaello))));
 
             MultiItemsDiscount multiItemsDiscount = multiItemsDiscountRepository.save(multiItemsDiscount(Sets
-                    .newHashSet(cola)));
+                    .newHashSet(cola, snickers, flakes)));
 
             wine.setBoughtTogetherDiscount(boughtTogetherDiscount);
             rafaello.setBoughtTogetherDiscount(boughtTogetherDiscount);
+
             flakes.setMultiItemsDiscount(multiItemsDiscount);
+            snickers.setMultiItemsDiscount(multiItemsDiscount);
+            cola.setMultiItemsDiscount(multiItemsDiscount);
 
             productRepository.save(flakes);
             productRepository.save(wine);

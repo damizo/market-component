@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+
+//TODO: to improve
 public class InMemoryRepository<E> implements JpaRepository<E, Long> {
     protected ConcurrentHashMap<Long, E> map = new ConcurrentHashMap<>();
 
@@ -22,7 +24,7 @@ public class InMemoryRepository<E> implements JpaRepository<E, Long> {
         return (S) map.get(id);
     }
 
-    public void save(Long identifier, E e){
+    public void save(Long identifier, E e) {
         map.put(identifier, e);
     }
 

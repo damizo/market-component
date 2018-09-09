@@ -59,7 +59,7 @@ public class PriceDTO implements Serializable {
         return this.value;
     }
 
-    public Price toPrice(Currency currency){
+    public Price toPrice(Currency currency) {
         return new Price(value, currency);
     }
 

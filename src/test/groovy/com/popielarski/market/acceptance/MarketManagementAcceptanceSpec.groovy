@@ -2,19 +2,18 @@ package com.popielarski.market.acceptance
 
 import com.google.common.collect.Sets
 import com.popielarski.market.IntegrationSpec
-import com.popielarski.market.checkout.domain.*
+import com.popielarski.market.checkout.domain.CheckoutProcessStatus
+import com.popielarski.market.checkout.domain.CheckoutReceiptDTO
+import com.popielarski.market.checkout.domain.CheckoutScanDTO
+import com.popielarski.market.checkout.domain.CheckoutStatusDTO
 import com.popielarski.market.common.domain.Calculator
-import com.popielarski.market.common.domain.Quantity
 import com.popielarski.market.common.domain.PriceDTO
+import com.popielarski.market.common.domain.Quantity
 import com.popielarski.market.discount.domain.DiscountConfiguration
 import com.popielarski.market.discount.domain.DiscountDTO
 import com.popielarski.market.discount.domain.DiscountType
-import com.popielarski.market.infrastructure.build.Profiles
 import com.popielarski.market.product.domain.ProductConfiguration
 import com.popielarski.market.product.domain.ProductDataContainer
-import org.springframework.context.annotation.Profile
-import org.springframework.test.annotation.IfProfileValue
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.ResultActions

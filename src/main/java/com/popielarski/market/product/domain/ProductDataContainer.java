@@ -5,9 +5,6 @@ import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDisco
 import com.popielarski.market.discount.domain.boughttogether.ProductDiscountPair;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import com.popielarski.market.item.ItemDTO;
-import com.popielarski.market.product.domain.Price;
-import com.popielarski.market.product.domain.Product;
-import com.popielarski.market.product.domain.ProductDTO;
 
 import java.util.Set;
 
@@ -21,14 +18,14 @@ public class ProductDataContainer {
                 .build();
     }
 
-    public MultiItemsDiscount multiItemsDiscount(Set<Product> products){
+    public MultiItemsDiscount multiItemsDiscount(Set<Product> products) {
         return MultiItemsDiscount.builder()
                 .description("If you buy more than one item of this product, your price will be decreased by price of one quantity of this product")
                 .products(products)
                 .build();
     }
 
-    public BoughtTogetherDiscount boughtTogetherDiscount(Set<ProductDiscountPair> productPairs){
+    public BoughtTogetherDiscount boughtTogetherDiscount(Set<ProductDiscountPair> productPairs) {
         return BoughtTogetherDiscount.builder()
                 .description("Each price of pair's product will be divided by 2")
                 .productPairs(productPairs)

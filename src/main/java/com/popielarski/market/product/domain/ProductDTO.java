@@ -4,8 +4,6 @@ import com.popielarski.market.common.domain.BaseDTO;
 import com.popielarski.market.common.domain.PriceDTO;
 import lombok.*;
 
-import java.util.Objects;
-
 @Getter
 @Setter
 @NoArgsConstructor

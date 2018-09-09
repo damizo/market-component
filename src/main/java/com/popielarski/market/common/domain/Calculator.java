@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 import static com.popielarski.market.common.utils.MathUtils.mathContext;
 
-    public class Calculator {
+public class Calculator {
 
     public static PriceDTO multiple(Integer firstValue, BigDecimal secondValue) {
         return PriceDTO.of(new BigDecimal(firstValue).multiply(secondValue).round(mathContext));

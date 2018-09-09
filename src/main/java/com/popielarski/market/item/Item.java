@@ -37,7 +37,7 @@ public class Item extends BaseEntity {
     private Cart cart;
 
     public Item() {
-
+        //JPA requires default constructor
     }
 
     public void decreaseQuantity(Integer quantity) {

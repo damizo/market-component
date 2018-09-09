@@ -5,7 +5,6 @@ import com.popielarski.market.common.utils.PageableHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class ProductFacade {
 
     public ProductDTO createProduct(ProductDTO productDTO) {
         productRepository.findByBarCode(productDTO.getBarCode())
-                .ifPresent((product) -> new LogicValidationException(String.format("Product with barCode %s already exists",
+                .ifPresent(product -> new LogicValidationException(String.format("Product with barCode %s already exists",
                         product.getBarCode())));
 
         Product product = productFactory.create(productDTO.getName(), productDTO.getPrice(), productDTO.getQuantity(), productDTO.getBarCode());

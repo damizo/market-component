@@ -1,5 +1,5 @@
 package com.popielarski.market.common.domain;
 
-public enum  Currency {
+public enum Currency {
     PLN, EUR, USD, GBP
 }

@@ -43,7 +43,7 @@ public class DiscountFacade {
 
         DiscountStrategy discountStrategy = discountStrategyFactory.getDiscountStrategy(DiscountType.BOUGHT_TOGETHER);
 
-        Cart cartAfterDiscount = discountStrategy.calculateDiscount(cartBeforeDiscount );
+        Cart cartAfterDiscount = discountStrategy.calculateDiscount(cartBeforeDiscount);
         cartRepository.save(cartAfterDiscount);
         log.debug("After discount: {}", cartBeforeDiscount);
 

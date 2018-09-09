@@ -4,12 +4,10 @@ import com.popielarski.market.cart.Cart;
 import com.popielarski.market.cart.CartDTO;
 import com.popielarski.market.cart.CartMapper;
 import com.popielarski.market.cart.CartRepository;
-import com.popielarski.market.common.utils.PriceUtils;
 import com.popielarski.market.common.exception.LogicValidationException;
-import com.popielarski.market.item.ItemFactory;
+import com.popielarski.market.common.utils.PriceUtils;
 import com.popielarski.market.item.Item;
-import com.popielarski.market.item.ItemMapper;
-import com.popielarski.market.item.ItemRepository;
+import com.popielarski.market.item.ItemFactory;
 import com.popielarski.market.product.domain.Product;
 import com.popielarski.market.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class CheckoutFacade {
@@ -55,7 +54,6 @@ public class CheckoutFacade {
     }
 
 
-    @Transactional
     public CheckoutScanDTO scanItem(Integer checkoutNumber, String barCode) {
         log.debug("Scanning barCode {} in checkout number {}");
         Product product = productRepository.findByBarCode(barCode)
@@ -92,10 +90,6 @@ public class CheckoutFacade {
             log.debug("Checkout is ready to scan items");
             return checkoutMapper.toStatusDTO(cart.getId(), checkoutNumber, CheckoutProcessStatus.WHILE_SCANNING);
         }
-    }
-
-    private void decreaseQuantity(Product product) {
-        productRepository.save(product);
     }
 
     private void addItemAndSave(Integer checkoutNumber, Product product, Cart cart) {

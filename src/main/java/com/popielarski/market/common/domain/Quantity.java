@@ -1,5 +1,9 @@
 package com.popielarski.market.common.domain;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Quantity {
 
     public static final int ZERO = 0;

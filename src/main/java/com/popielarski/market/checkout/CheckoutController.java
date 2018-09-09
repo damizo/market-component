@@ -23,12 +23,12 @@ class CheckoutController {
     }
 
     @PostMapping(value = "/{checkoutNumber}/carts/{barCode}")
-    CheckoutScanDTO scan(@PathVariable Integer checkoutNumber, @PathVariable String barCode) {
+    CheckoutScanDTO scanItemInCart(@PathVariable Integer checkoutNumber, @PathVariable String barCode) {
         return checkoutFacade.scanItem(checkoutNumber, barCode);
     }
 
     @PutMapping(value = "/{checkoutNumber}")
-    CheckoutReceiptDTO pay(@PathVariable Integer checkoutNumber, @RequestParam Integer amountPayment) {
+    CheckoutReceiptDTO makePayment(@PathVariable Integer checkoutNumber, @RequestParam Integer amountPayment) {
         return checkoutFacade.makePayment(checkoutNumber, amountPayment);
     }
 }

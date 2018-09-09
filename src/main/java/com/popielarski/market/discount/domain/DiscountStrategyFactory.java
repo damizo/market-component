@@ -3,7 +3,7 @@ package com.popielarski.market.discount.domain;
 import com.popielarski.market.discount.domain.boughttogether.BoughTogetherDiscountStrategy;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscountStrategy;
 
- class DiscountStrategyFactory {
+class DiscountStrategyFactory {
 
     public DiscountStrategy getDiscountStrategy(DiscountType type) {
         DiscountStrategy discountStrategy = null;

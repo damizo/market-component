@@ -4,7 +4,6 @@ import com.popielarski.market.cart.CartMapper;
 import com.popielarski.market.cart.CartRepository;
 import com.popielarski.market.item.ItemFactory;
 import com.popielarski.market.item.ItemMapper;
-import com.popielarski.market.item.ItemRepository;
 import com.popielarski.market.product.domain.ProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

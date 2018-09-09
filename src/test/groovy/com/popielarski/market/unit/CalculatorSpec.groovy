@@ -2,13 +2,8 @@ package com.popielarski.market.unit
 
 import com.popielarski.market.common.domain.Calculator
 import com.popielarski.market.common.domain.PriceDTO
-import com.popielarski.market.infrastructure.build.Profiles
 import com.popielarski.market.product.domain.Price
-import org.springframework.context.annotation.Profile
-import org.springframework.test.annotation.IfProfileValue
-import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
-
 
 class CalculatorSpec extends Specification {
 
@@ -17,10 +12,10 @@ class CalculatorSpec extends Specification {
         Calculator.multiple(firstValue, secondValue) == result
 
         where:
-        firstValue       | secondValue         | result
-        5                | new BigDecimal(100) | PriceDTO.of(500)
-        10               | PriceDTO.of(40)     | PriceDTO.of(400)
-        12               | Price.of("10")      | Price.of(120)
+        firstValue | secondValue         | result
+        5          | new BigDecimal(100) | PriceDTO.of(500)
+        10         | PriceDTO.of(40)     | PriceDTO.of(400)
+        12         | Price.of("10")      | Price.of(120)
     }
 
     def "should add"() {
@@ -39,9 +34,9 @@ class CalculatorSpec extends Specification {
         Calculator.subtract(firstValue, secondValue) == result
 
         where:
-        firstValue                    | secondValue      | result
-        Price.of(10.75)         | Price.of(3)            | Price.of(7.75)
-        1000                          | PriceDTO.of(430) | PriceDTO.of(570)
+        firstValue      | secondValue      | result
+        Price.of(10.75) | Price.of(3)      | Price.of(7.75)
+        1000            | PriceDTO.of(430) | PriceDTO.of(570)
     }
 
 

@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,10 +21,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class BoughTogetherDiscountStrategy implements DiscountStrategy {
-    private static final int MINIMAL_REQUIRED_AMOUNT_OF_PRODUCTS = 2;
-
-    private BoughtTogetherDiscountRepository discountRepository;
-    private ProductDiscountPairRepository itemDiscountPairRepository;
 
     @Override
     public Cart calculateDiscount(Cart cart) {
@@ -44,7 +39,7 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
         TemporaryDiscountHolder temporaryDiscountHolder = new TemporaryDiscountHolder();
 
         discountItems
-                .forEach((pair) -> {
+                .forEach(pair -> {
                     temporaryDiscountHolder.increase(decreaseHalfAPrice(pair.getFirstProduct().getPrice(),
                             pair.getSecondProduct().getPrice()));
                 });
@@ -56,12 +51,12 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
 
     private Set<ProductDiscountPair> getExistingPairsFromCart(Cart cart, Set<Item> items) {
         return items.stream()
-                    .map(Item::getProduct)
-                    .map(Product::getBoughtTogetherDiscount)
-                    .map(BoughtTogetherDiscount::getProductPairs)
-                    .flatMap(Set::stream)
-                    .filter((pair) -> pairExistsInCart(cart, pair))
-                    .collect(Collectors.toSet());
+                .map(Item::getProduct)
+                .map(Product::getBoughtTogetherDiscount)
+                .map(BoughtTogetherDiscount::getProductPairs)
+                .flatMap(Set::stream)
+                .filter(pair -> pairExistsInCart(cart, pair))
+                .collect(Collectors.toSet());
     }
 
     private boolean pairExistsInCart(Cart cart, ProductDiscountPair pair) {
@@ -76,17 +71,6 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
     private Price decreaseHalfAPrice(Price firstProductPrice, Price secondProductPrice) {
         Price result = Calculator.add(firstProductPrice, secondProductPrice);
         return Calculator.multiple(result, "0.30");
-    }
-
-    private List<Item> checkPairInCart(Cart cart, Product firstItem, Product secondItem) {
-        return cart.getItems()
-                .stream()
-                .filter((item) -> canBeDiscounted(firstItem, secondItem, item))
-                .collect(Collectors.toList());
-    }
-
-    private boolean canBeDiscounted(Product firstItem, Product secondItem, Item item) {
-        return (item.getProduct().equals(firstItem) || item.getProduct().equals(secondItem));
     }
 
     @Getter
