@@ -31,12 +31,18 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
         log.info("Items to discount with 'Bought Together' discount: {}", items);
 
         if (items.isEmpty()) {
-            throw new LogicValidationException(String.format("Cart with id %d does not contain items that are allowed to discount", cart.getId()));
+            throw new LogicValidationException(String.format("Cart with id %d does not contain items that are allowed to discount",
+                    cart.getId()));
         }
 
         Set<BoughtTogetherDiscountPair> discountItems = getExistingPairsFromCart(cart, items);
         Price cartTotalPrice = cart.getTotalPriceOfItems();
         TemporaryDiscountHolder temporaryDiscountHolder = new TemporaryDiscountHolder();
+
+        if (discountItems.size() == 0) {
+            throw new LogicValidationException(String.format("No corresponding pairs for 'Bought Together' discount have been found in cart with id %d",
+                    cart.getId()));
+        }
 
         discountItems
                 .forEach(pair -> {

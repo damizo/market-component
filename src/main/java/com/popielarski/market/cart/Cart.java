@@ -3,7 +3,6 @@ package com.popielarski.market.cart;
 import com.google.common.collect.Sets;
 import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.common.domain.Calculator;
-import com.popielarski.market.common.domain.Quantity;
 import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.Item;
 import com.popielarski.market.product.domain.Price;

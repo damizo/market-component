@@ -84,6 +84,7 @@ class ProductManagementIntegrationSpec extends IntegrationSpec {
                 .perform(put("/api/v1/products/{productId}?quantity={quantity}", vodka.id, quantity));
 
         vodka.quantity += quantity
+
         then: 'quantity increased to 25'
         resultActions.andExpect(status().isOk())
                 .andExpect(content().json(buildJson(vodka)))

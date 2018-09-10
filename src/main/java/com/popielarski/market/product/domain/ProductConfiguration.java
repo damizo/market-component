@@ -1,11 +1,8 @@
 package com.popielarski.market.product.domain;
 
-import com.google.common.collect.Sets;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountPair;
-import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountRepository;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
-import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscountRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +32,6 @@ public class ProductConfiguration extends ProductDataContainer {
             BoughtTogetherDiscount boughtTogetherDiscount = new BoughtTogetherDiscount();
             BoughtTogetherDiscountPair pair = pair(wine, rafaello);
             boughtTogetherDiscount.addPair(pair);
-
 
             productRepository.save(snickers);
             productRepository.save(cola);

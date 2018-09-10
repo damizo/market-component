@@ -16,12 +16,6 @@ public class ItemMapper {
                 .build();
     }
 
-    public Item asDomain(ItemDTO item) {
-        return Item.builder()
-                .quantity(item.getQuantity())
-                .build();
-    }
-
     public Set<ItemDTO> asDTO(Set<Item> items) {
         return items.stream()
                 .map(item -> asDTO(item, item.getQuantity()))

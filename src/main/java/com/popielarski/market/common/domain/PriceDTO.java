@@ -19,28 +19,31 @@ public class PriceDTO implements Serializable {
 
     private BigDecimal value;
 
-    private PriceDTO(BigDecimal value) {
+    private Currency currency;
+
+    private PriceDTO(BigDecimal value, Currency currency) {
         this.value = value.round(mathContext);
+        this.currency = currency;
     }
 
     public static PriceDTO of(Integer value) {
-        return new PriceDTO(fromInteger(value));
+        return new PriceDTO(fromInteger(value), Currency.PLN);
     }
 
     public static PriceDTO of(Long value) {
-        return new PriceDTO(fromLong(value));
+        return new PriceDTO(fromLong(value), Currency.PLN);
     }
 
     public static PriceDTO of(String value) {
-        return new PriceDTO(fromString(value));
+        return new PriceDTO(fromString(value), Currency.PLN);
     }
 
     public static PriceDTO of(BigDecimal value) {
-        return new PriceDTO(value);
+        return new PriceDTO(value, Currency.PLN);
     }
 
     public static PriceDTO of(Price price) {
-        return new PriceDTO(price.getValue());
+        return new PriceDTO(price.getValue(), Currency.PLN);
     }
 
     private static BigDecimal fromInteger(Integer value) {
