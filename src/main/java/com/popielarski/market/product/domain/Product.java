@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@ToString(of = {"barCode", "name", "quantity"})
 public class Product extends BaseEntity {
 
     @Column(name = "BAR_CODE")

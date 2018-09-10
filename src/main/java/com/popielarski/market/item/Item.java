@@ -6,10 +6,7 @@ import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.product.domain.Price;
 import com.popielarski.market.product.domain.Product;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -18,6 +15,7 @@ import javax.persistence.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@ToString
 public class Item extends BaseEntity {
 
     public static final Integer DEFAULT_QUANTITY = 1;

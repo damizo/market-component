@@ -6,10 +6,7 @@ import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.Item;
 import com.popielarski.market.product.domain.Price;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Optional;
@@ -20,6 +17,7 @@ import java.util.Set;
 @Setter
 @Builder
 @AllArgsConstructor
+@ToString(callSuper = true, exclude = "items")
 public class Cart extends BaseEntity {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)

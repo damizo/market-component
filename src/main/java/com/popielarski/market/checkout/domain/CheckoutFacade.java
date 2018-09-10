@@ -61,7 +61,7 @@ public class CheckoutFacade {
     }
 
     public CheckoutScanDTO scanItem(Integer checkoutNumber, String barCode) {
-        log.info("Scanning barCode {} in checkout number {}");
+        log.info("Scanning barCode {} in checkout number {}", checkoutNumber, barCode);
         Product product = productRepository.findByBarCode(barCode)
                 .orElseThrow(() ->
                         new UnsupportedOperationException(String.format("Product with barCode %s does not exist", barCode)));

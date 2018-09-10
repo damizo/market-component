@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestUtils {
@@ -31,7 +30,4 @@ public class TestUtils {
         return null;
     }
 
-    public static <T> T convertMapToObject(Map map, Class<T> clazz) {
-        return objectMapper.convertValue(map, clazz);
-    }
 }

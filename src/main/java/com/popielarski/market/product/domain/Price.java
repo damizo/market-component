@@ -12,11 +12,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "PRICES")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@ToString
 public class Price extends BaseEntity implements Serializable {
 
     @Column(name = "VALUE")

@@ -1,6 +1,0 @@
-version: '3'
-services:
-  market-component:
-    image: market-component
-    ports:
-      - '8082:8082'
