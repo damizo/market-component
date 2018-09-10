@@ -40,3 +40,5 @@ In folder **examples** you can find postman collection with endpoints.
   
 In order to get through business process, just invoke endpoints in order:
 ***GET ALL PRODUCTS*** -> ***COME UP TO CHECKOUT*** -> ***SCAN PRODUCT*** -> ***ASSIGN DISCOUNT*** -> ***MAKE PAYMENT***
+
+I recommend also scenarios like exceeding the limit of available products while scanning and try to assign different discounts
