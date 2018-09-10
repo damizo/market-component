@@ -7,7 +7,7 @@ Technologies:
 - Spock
 - H2
 
-
+----------------------
  ****Setting up environment:****    
  Application has three different profiles (their correspond your purposes). Set up has to be convenient and easy. You can set up application on your local machine without any external services.
     
