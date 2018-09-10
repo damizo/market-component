@@ -26,7 +26,7 @@ similar to profile above, but main purpose of this profile is to run all tests.
 	 mvn clean install -P test  
  
 **LOCAL**  
-When I've added him, I had in my mind setting up **MariaDB** in Docker container. Unfortunately I haven't end it, because there was other important stuff to do. Anyway, you can check what has left from this idea in **docker-conf** folder ;)   
+When I've added him, I had in my mind setting up **Market-Component** and **MariaDB** in Docker containers. Unfortunately I haven't end it.
   
 **PROD**  
 Just like above.   
