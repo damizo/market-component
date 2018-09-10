@@ -39,22 +39,6 @@ public class CartDTO extends BaseDTO {
                 .get();
     }
 
-    public void addItem(ItemDTO itemDTO) {
-        items.add(itemDTO);
-    }
-
-    public void increaseQuantityOfItem(Integer quantity, String barCode) {
-        Optional<ItemDTO> itemOptional = items.stream()
-                .map(item -> item.increaseQuantity(quantity))
-                .findAny();
-
-        if (itemOptional.isPresent()) {
-            items.add(itemOptional.get());
-        } else {
-            throw new UnsupportedOperationException(String.format("Item with barCode %s does not exist in cart", barCode));
-        }
-    }
-
     public PriceDTO getPrice() {
         return this.getFinalPrice() != null ?
                 this.getFinalPrice() : this.getTotalPrice();

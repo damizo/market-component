@@ -19,10 +19,5 @@ public class ItemDTO {
         return Calculator.multiple(quantity, price.getValue());
     }
 
-    public ItemDTO increaseQuantity(Integer quantity){
-        this.quantity += quantity;
-        return this;
-    }
-
 }
 
