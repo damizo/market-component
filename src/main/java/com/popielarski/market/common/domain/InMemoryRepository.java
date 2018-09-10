@@ -52,7 +52,7 @@ public class InMemoryRepository<E> implements JpaRepository<E, Long> {
 
     @Override
     public List<E> findAll(Sort sort) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -63,12 +63,12 @@ public class InMemoryRepository<E> implements JpaRepository<E, Long> {
 
     @Override
     public List<E> findAllById(Iterable<Long> iterable) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long count() {
-        return 0;
+        return map.size();
     }
 
     @Override
@@ -78,7 +78,10 @@ public class InMemoryRepository<E> implements JpaRepository<E, Long> {
 
     @Override
     public void delete(E e) {
-
+        map.entrySet().stream().
+                filter(entry -> entry.getValue().equals(e))
+                .findAny()
+                .ifPresent((entry) -> map.remove(entry.getKey()));
     }
 
     @Override
@@ -109,7 +112,7 @@ public class InMemoryRepository<E> implements JpaRepository<E, Long> {
 
     @Override
     public E getOne(Long id) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.popielarski.market.product.domain;
 
 import com.popielarski.market.common.domain.PriceDTO;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
-import com.popielarski.market.discount.domain.boughttogether.ProductDiscountPair;
+import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountPair;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import com.popielarski.market.item.ItemDTO;
 
@@ -25,7 +25,7 @@ public class ProductDataContainer {
                 .build();
     }
 
-    public BoughtTogetherDiscount boughtTogetherDiscount(Set<ProductDiscountPair> productPairs) {
+    public BoughtTogetherDiscount boughtTogetherDiscount(Set<BoughtTogetherDiscountPair> productPairs) {
         return BoughtTogetherDiscount.builder()
                 .description("Each price of pair's product will be divided by 2")
                 .productPairs(productPairs)
@@ -152,8 +152,8 @@ public class ProductDataContainer {
                 .build();
     }
 
-    public ProductDiscountPair pair(Product wine, Product rafaello) {
-        return ProductDiscountPair.builder()
+    public BoughtTogetherDiscountPair pair(Product wine, Product rafaello) {
+        return BoughtTogetherDiscountPair.builder()
                 .firstProduct(wine)
                 .secondProduct(rafaello)
                 .build();

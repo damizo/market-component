@@ -6,6 +6,7 @@ import com.popielarski.market.common.exception.LogicValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 
@@ -48,8 +49,18 @@ public class DiscountFacade {
 
     private void validateCart(Cart cartBeforeDiscount) {
         if (cartBeforeDiscount.isDiscountApplied()) {
-            throw new LogicValidationException(String.format("Cart with id %s has already applied discount. " +
+            throw new LogicValidationException(String.format("Cart with id %d has already applied discount. " +
                     "One cart might contains only one discount.", cartBeforeDiscount.getId()));
+        }
+
+        if (cartBeforeDiscount.isPaid()) {
+            throw new LogicValidationException(String.format("Cart with id %d has been already paid.",
+                    cartBeforeDiscount.getId()));
+        }
+
+        if (CollectionUtils.isEmpty(cartBeforeDiscount.getItems())) {
+            throw new LogicValidationException(String.format("Cart with id %d does not contain items.",
+                    cartBeforeDiscount.getId()));
         }
     }
 }

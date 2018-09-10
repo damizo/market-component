@@ -58,7 +58,4 @@ public class Price extends BaseEntity implements Serializable {
         return PriceDTO.of(this);
     }
 
-    public static BigDecimal bigDecimalOf(String value) {
-        return new BigDecimal(value, MathUtils.mathContext);
-    }
 }

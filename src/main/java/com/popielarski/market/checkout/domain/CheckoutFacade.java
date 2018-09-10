@@ -38,10 +38,11 @@ public class CheckoutFacade {
     public CheckoutReceiptDTO makePayment(Integer checkoutNumber, Integer amount) {
         log.debug("Making payment in checkout number {} with amount", checkoutNumber, amount);
         Cart cart = checkoutCacheRepository.findByCheckoutNumber(checkoutNumber)
-                .orElseThrow(() -> new UnsupportedOperationException(String.format("Checkout number %s is not available, " +
+                .orElseThrow(() -> new UnsupportedOperationException(String.format("Checkout number %d is not available, " +
                         "probably scanning in this checkout has not been initialized", checkoutNumber)));
 
         if (PriceUtils.isCovered(cart.getPrice().toValue(), amount)) {
+            cart.setPaid(Boolean.TRUE);
             deleteFromCacheAndSaveCart(checkoutNumber, cart);
 
             CartDTO cartDTO = cartMapper.toDTO(cart);
@@ -55,10 +56,10 @@ public class CheckoutFacade {
 
 
     public CheckoutScanDTO scanItem(Integer checkoutNumber, String barCode) {
-        log.debug("Scanning barCode {} in checkout number {}");
+        log.info("Scanning barCode {} in checkout number {}");
         Product product = productRepository.findByBarCode(barCode)
                 .orElseThrow(() ->
-                        new UnsupportedOperationException(String.format("Item with barCode %s does not exist", barCode)));
+                        new UnsupportedOperationException(String.format("Product with barCode %s does not exist", barCode)));
 
         Optional<Item> itemToScanOptional = checkoutCacheRepository.findItemByCheckoutNumberAndCode(checkoutNumber, barCode);
 
@@ -79,7 +80,7 @@ public class CheckoutFacade {
     public CheckoutStatusDTO initializeScanning(Integer checkoutNumber) {
         boolean isCheckoutAlreadyOccupied = checkoutCacheRepository.findByCheckoutNumber(checkoutNumber)
                 .isPresent();
-        log.debug("Checkout {} already occupied: {}", checkoutNumber, isCheckoutAlreadyOccupied);
+        log.info("Checkout {} already occupied: {}", checkoutNumber, isCheckoutAlreadyOccupied);
 
         if (isCheckoutAlreadyOccupied) {
             throw new UnsupportedOperationException(String.format("Checkout number %s is already occupied", checkoutNumber));
@@ -87,7 +88,7 @@ public class CheckoutFacade {
             Cart cart = cartRepository.save(new Cart());
             checkoutCacheRepository.save(checkoutNumber, cart);
 
-            log.debug("Checkout is ready to scan items");
+            log.info("Checkout is ready to scan items");
             return checkoutMapper.toStatusDTO(cart.getId(), checkoutNumber, CheckoutProcessStatus.WHILE_SCANNING);
         }
     }
@@ -102,10 +103,15 @@ public class CheckoutFacade {
     private void updateQuantityAndSave(Integer checkoutNumber, String barCode, Cart cart) {
         cart.increaseQuantityOfItem(Item.DEFAULT_QUANTITY, barCode);
         checkoutCacheRepository.save(checkoutNumber, cart);
+
+        cart = cartRepository.save(cart);
+        log.info("Persisted cart: {}", cart);
     }
 
     private void deleteFromCacheAndSaveCart(Integer checkoutNumber, Cart cart) {
         checkoutCacheRepository.deleteById(Long.valueOf(checkoutNumber));
-        cartRepository.save(cart);
+
+        cart = cartRepository.save(cart);
+        log.info("Persisted cart: {}", cart);
     }
 }

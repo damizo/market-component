@@ -1,26 +1,28 @@
 package com.popielarski.market.cart;
 
 import com.google.common.collect.Sets;
-import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.common.domain.BaseEntity;
+import com.popielarski.market.common.domain.Calculator;
 import com.popielarski.market.discount.domain.DiscountType;
 import com.popielarski.market.item.Item;
 import com.popielarski.market.product.domain.Price;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @AllArgsConstructor
 public class Cart extends BaseEntity {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<Item> items = Sets.newHashSet();
 
     @Column(name = "IS_DISCOUNT_APPLIED")
@@ -38,8 +40,12 @@ public class Cart extends BaseEntity {
     @JoinColumn(name = "FINAL_PRICE_ID")
     private Price finalPrice;
 
+    @Column(name = "PAID")
+    private Boolean paid;
+
     public Cart() {
         discountApplied = Boolean.FALSE;
+        paid = Boolean.FALSE;
     }
 
     private boolean isMoreThanOne(Item item) {
@@ -66,8 +72,9 @@ public class Cart extends BaseEntity {
     }
 
     public void addItem(Item item) {
-        this.price = item.getTotalPrice();
         this.items.add(item);
+        item.setCart(this);
+        this.price = item.getTotalPrice();
     }
 
     public Price getPrice() {
@@ -75,12 +82,17 @@ public class Cart extends BaseEntity {
                 this.getFinalPrice() : this.getTotalPriceOfItems();
     }
 
+    public boolean isPaid() {
+        return this.paid;
+    }
+
     public void applyDiscount(DiscountType discountType) {
         this.discountApplied = Boolean.TRUE;
         this.discount = discountType;
     }
 
-    public boolean isDiscountApplied(){
+    public boolean isDiscountApplied() {
         return this.discountApplied;
     }
+
 }

@@ -34,7 +34,7 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
             throw new LogicValidationException(String.format("Cart with id %d does not contain items that are allowed to discount", cart.getId()));
         }
 
-        Set<ProductDiscountPair> discountItems = getExistingPairsFromCart(cart, items);
+        Set<BoughtTogetherDiscountPair> discountItems = getExistingPairsFromCart(cart, items);
         Price cartTotalPrice = cart.getTotalPriceOfItems();
         TemporaryDiscountHolder temporaryDiscountHolder = new TemporaryDiscountHolder();
 
@@ -49,7 +49,7 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
         return cart;
     }
 
-    private Set<ProductDiscountPair> getExistingPairsFromCart(Cart cart, Set<Item> items) {
+    private Set<BoughtTogetherDiscountPair> getExistingPairsFromCart(Cart cart, Set<Item> items) {
         return items.stream()
                 .map(Item::getProduct)
                 .map(Product::getBoughtTogetherDiscount)
@@ -59,7 +59,7 @@ public class BoughTogetherDiscountStrategy implements DiscountStrategy {
                 .collect(Collectors.toSet());
     }
 
-    private boolean pairExistsInCart(Cart cart, ProductDiscountPair pair) {
+    private boolean pairExistsInCart(Cart cart, BoughtTogetherDiscountPair pair) {
         return cart.getItems()
                 .stream()
                 .map(Item::getProduct)

@@ -2,6 +2,7 @@ package com.popielarski.market.product.domain;
 
 import com.google.common.collect.Sets;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
+import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountPair;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountRepository;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscountRepository;
@@ -18,9 +19,7 @@ public class ProductConfiguration extends ProductDataContainer {
     }
 
     @Bean
-    public CommandLineRunner loadData(ProductRepository productRepository,
-                                      MultiItemsDiscountRepository multiItemsDiscountRepository,
-                                      BoughtTogetherDiscountRepository boughtTogetherDiscountRepository) {
+    public CommandLineRunner loadData(ProductRepository productRepository) {
         return (args) -> {
             Product cola = productRepository.save(cola());
             Product snickers = productRepository.save(snickers());
@@ -28,19 +27,18 @@ public class ProductConfiguration extends ProductDataContainer {
             Product flakes = productRepository.save(flakes());
             Product wine = productRepository.save(wine());
 
-            BoughtTogetherDiscount boughtTogetherDiscount = boughtTogetherDiscountRepository.save(boughtTogetherDiscount(Sets
-                    .newHashSet(pair(wine, rafaello))));
+            MultiItemsDiscount multiItemsDiscount = new MultiItemsDiscount();
+            multiItemsDiscount.addProduct(cola);
+            multiItemsDiscount.addProduct(flakes);
+            multiItemsDiscount.addProduct(snickers);
 
-            MultiItemsDiscount multiItemsDiscount = multiItemsDiscountRepository.save(multiItemsDiscount(Sets
-                    .newHashSet(cola, snickers, flakes)));
+            BoughtTogetherDiscount boughtTogetherDiscount = new BoughtTogetherDiscount();
+            BoughtTogetherDiscountPair pair = pair(wine, rafaello);
+            boughtTogetherDiscount.addPair(pair);
 
-            wine.setBoughtTogetherDiscount(boughtTogetherDiscount);
-            rafaello.setBoughtTogetherDiscount(boughtTogetherDiscount);
 
-            flakes.setMultiItemsDiscount(multiItemsDiscount);
-            snickers.setMultiItemsDiscount(multiItemsDiscount);
-            cola.setMultiItemsDiscount(multiItemsDiscount);
-
+            productRepository.save(snickers);
+            productRepository.save(cola);
             productRepository.save(flakes);
             productRepository.save(wine);
             productRepository.save(rafaello);

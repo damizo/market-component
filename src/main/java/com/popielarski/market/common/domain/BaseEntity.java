@@ -1,6 +1,5 @@
 package com.popielarski.market.common.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
 public abstract class BaseEntity {
 
     @Id
@@ -27,5 +25,16 @@ public abstract class BaseEntity {
 
     @UpdateTimestamp
     private LocalDateTime updateDate;
+
+    @Override
+    public boolean equals(Object o) {
+        BaseEntity entity = (BaseEntity) o;
+        return this.id != null && this.id.equals(entity.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 
 }

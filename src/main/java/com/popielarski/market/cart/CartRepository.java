@@ -3,5 +3,5 @@ package com.popielarski.market.cart;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CartRepository extends JpaRepository<Cart, Long>{
+public interface CartRepository extends JpaRepository<Cart, Long> {
 }

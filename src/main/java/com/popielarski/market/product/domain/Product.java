@@ -2,16 +2,15 @@ package com.popielarski.market.product.domain;
 
 import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
+import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountPair;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import com.popielarski.market.item.Item;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCTS")
@@ -19,6 +18,7 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Product extends BaseEntity {
 
     @Column(name = "BAR_CODE")
@@ -65,7 +65,4 @@ public class Product extends BaseEntity {
         return multiItemsDiscount != null;
     }
 
-    public void addItem(Item item) {
-        this.items.add(item);
-    }
 }

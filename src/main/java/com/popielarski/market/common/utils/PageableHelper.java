@@ -12,6 +12,6 @@ import java.util.List;
 public class PageableHelper {
 
     public static <T> Page<T> of(List<T> list, Pageable pageable) {
-        return new PageImpl<T>(list, pageable, list.size());
+        return new PageImpl<>(list, pageable, list.size());
     }
 }

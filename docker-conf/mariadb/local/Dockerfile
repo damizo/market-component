@@ -1,0 +1,8 @@
+FROM mariadb
+
+EXPOSE 3306
+
+ENV MYSQL_DATABASE market_component
+ENV MYSQL_ALLOW_EMPTY_PASSWORD true
+
+CMD ["mysqld"]
