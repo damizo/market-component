@@ -2,7 +2,6 @@ package com.popielarski.market.product.domain;
 
 import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscount;
-import com.popielarski.market.discount.domain.boughttogether.BoughtTogetherDiscountPair;
 import com.popielarski.market.discount.domain.multiitems.MultiItemsDiscount;
 import com.popielarski.market.item.Item;
 import lombok.*;
@@ -10,7 +9,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCTS")
@@ -50,7 +48,8 @@ public class Product extends BaseEntity {
     }
 
     public void decreaseQuantity(Integer quantity) {
-        this.quantity -= quantity;
+        Integer productQuantity = this.quantity - quantity;
+        this.quantity = productQuantity;
     }
 
     public void increaseQuantity(Integer quantity) {

@@ -1,0 +1,88 @@
+{
+	"variables": [],
+	"info": {
+		"name": "MARKET_COMPONENT_REST_API",
+		"_postman_id": "a2e0993e-8d1e-bf82-5bf2-121f98d30973",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET ALL PRODUCTS",
+			"request": {
+				"url": "http://localhost:8082/api/v1/products",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COME UP TO CHECKOUT",
+			"request": {
+				"url": "http://localhost:8082/api/v1/checkouts/3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SCAN PRODUCT",
+			"request": {
+				"url": "http://localhost:8082/api/v1/checkouts/3/carts/P_00004",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ASSIGN DISCOUNT",
+			"request": {
+				"url": "http://localhost:8082/api/v1/discounts/multiItems/carts/1",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "MAKE PAYMENT",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8082/api/v1/checkouts/3?amountPayment=5000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"checkouts",
+						"3"
+					],
+					"query": [
+						{
+							"key": "amountPayment",
+							"value": "5000",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

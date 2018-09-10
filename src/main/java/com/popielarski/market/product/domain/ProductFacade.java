@@ -15,9 +15,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductFacade {
 
-    private ProductRepository productRepository;
-    private ProductFactory productFactory;
-    private ProductMapper productMapper;
+    private final ProductRepository productRepository;
+
+    private final ProductFactory productFactory;
+
+    private final ProductMapper productMapper;
 
     public ProductDTO createProduct(ProductDTO productDTO) {
         productRepository.findByBarCode(productDTO.getBarCode())
@@ -35,7 +37,7 @@ public class ProductFacade {
 
     public ProductDTO addQuantityOfProduct(Long productId, Integer quantity) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new LogicValidationException(String.format("Product with barCode %s already exists",
+                .orElseThrow(() -> new LogicValidationException(String.format("Product with barCode %s does not exist",
                         productId)));
         log.debug("Product with id {} has been found: {}", productId, product);
 

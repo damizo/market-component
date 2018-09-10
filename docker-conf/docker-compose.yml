@@ -1,10 +1,6 @@
 version: '3'
 services:
-  mariadb_main:
-    image: mariadb
-    ports:
-      - '3316:3306'
-  market_component:
-    image: market_component
+  market-component:
+    image: market-component
     ports:
       - '8082:8082'

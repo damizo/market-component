@@ -20,12 +20,12 @@ public class DiscountFacade {
     private final DiscountMapper discountMapper;
     private final CartRepository cartRepository;
 
-    public DiscountDTO addMultiItemsDiscount(Long cartId) {
+    public DiscountDTO assignMultiItemsDiscount(Long cartId) {
         log.info("Applying 'Multi Items' discount for cart with id: {}", cartId);
         return applyDiscount(cartId, DiscountType.MULTI_ITEMS);
     }
 
-    public DiscountDTO addBoughtTogetherDiscount(Long cartId) {
+    public DiscountDTO assignBoughtTogetherDiscount(Long cartId) {
         log.info("Applying 'Bought Together' discount for cart with id: {}", cartId);
         return applyDiscount(cartId, DiscountType.BOUGHT_TOGETHER);
     }

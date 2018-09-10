@@ -96,6 +96,7 @@ class MarketManagementAcceptanceSpec extends IntegrationSpec {
                 .items(Sets.newHashSet(dataContainer.flakesDTO(Quantity.ONE), dataContainer.wineDTO(Quantity.ONE)))
                 .finalPrice(PriceDTO.of(amountPayment))
                 .change(PriceDTO.of(0))
+                .appliedDiscount(DiscountType.NONE)
                 .build()
 
         then: 'client gets receipt without any discount'

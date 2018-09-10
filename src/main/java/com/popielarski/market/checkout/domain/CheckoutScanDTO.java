@@ -15,6 +15,5 @@ public class CheckoutScanDTO {
     private Integer checkoutNumber;
     private Set<ItemDTO> items;
     private PriceDTO totalPrice;
-    private Set<DiscountType> availableDiscounts;
 
 }
