@@ -1,7 +1,6 @@
 package com.popielarski.market.product.domain;
 
 import com.popielarski.market.common.domain.Currency;
-import com.popielarski.market.common.utils.MathUtils;
 import com.popielarski.market.common.domain.BaseEntity;
 import com.popielarski.market.common.domain.PriceDTO;
 import lombok.*;
@@ -9,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table(name = "PRICES")
@@ -26,7 +26,7 @@ public class Price extends BaseEntity implements Serializable {
     private Currency currency;
 
     public BigDecimal getValue() {
-        return this.value.round(MathUtils.mathContext);
+        return this.value.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     public static Price of(BigDecimal value) {

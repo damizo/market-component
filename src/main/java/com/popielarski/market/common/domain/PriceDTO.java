@@ -1,5 +1,7 @@
 package com.popielarski.market.common.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.popielarski.market.common.MoneySerializer;
 import com.popielarski.market.product.domain.Price;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,8 +10,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-import static com.popielarski.market.common.utils.MathUtils.mathContext;
 
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -17,12 +19,13 @@ import static com.popielarski.market.common.utils.MathUtils.mathContext;
 @Setter
 public class PriceDTO implements Serializable {
 
+    @JsonSerialize(using = MoneySerializer.class)
     private BigDecimal value;
 
     private Currency currency;
 
     private PriceDTO(BigDecimal value, Currency currency) {
-        this.value = value.round(mathContext);
+        this.value = value.setScale(2, RoundingMode.HALF_EVEN);
         this.currency = currency;
     }
 
@@ -47,15 +50,15 @@ public class PriceDTO implements Serializable {
     }
 
     private static BigDecimal fromInteger(Integer value) {
-        return new BigDecimal(value, mathContext);
+        return new BigDecimal(value);
     }
 
     private static BigDecimal fromString(String value) {
-        return new BigDecimal(value, mathContext);
+        return new BigDecimal(value).setScale(2, RoundingMode.UNNECESSARY);
     }
 
     private static BigDecimal fromLong(Long value) {
-        return new BigDecimal(value, mathContext);
+        return new BigDecimal(value).setScale(2, RoundingMode.UNNECESSARY);
     }
 
     public BigDecimal getValue() {

@@ -50,6 +50,42 @@ public class ProductDataContainer {
                 .build();
     }
 
+    public Product cigarettes() {
+        return Product.builder()
+                .barCode("P_00010")
+                .quantity(25)
+                .name("Malboro")
+                .price(Price.of("14.49"))
+                .build();
+    }
+
+    public Product whiskey() {
+        return Product.builder()
+                .barCode("P_00011")
+                .quantity(50)
+                .name("Jack Daniel's 1l")
+                .price(Price.of("105.99"))
+                .build();
+    }
+
+    public Product ice() {
+        return Product.builder()
+                .barCode("P_00012")
+                .quantity(50)
+                .name("Ice")
+                .price(Price.of("6.50"))
+                .build();
+    }
+
+    public Product apple() {
+        return Product.builder()
+                .barCode("P_00014")
+                .quantity(50)
+                .name("Apple")
+                .price(Price.of("2.50"))
+                .build();
+    }
+
     public ItemDTO snickersItemDTO(Integer quantity) {
         Product snickers = snickers();
         return ItemDTO.builder()

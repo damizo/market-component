@@ -43,9 +43,9 @@ public class CheckoutFacade {
         Cart cart = checkoutCacheRepository.findByCheckoutNumber(checkoutNumber)
                 .orElseThrow(() -> new UnsupportedOperationException(String.format("Checkout number %d is not available, " +
                         "probably scanning has not been initialized or cart has been paid", checkoutNumber)));
+        cart = findCartAndValidateBeforePayment(cart);
 
         if (PriceUtils.isCovered(cart.getPrice().toValue(), amount)) {
-            cart = findCartAndValidateBeforePayment(cart);
             cart.setPaid(Boolean.TRUE);
 
             deleteFromCacheAndSaveCart(checkoutNumber, cart);
